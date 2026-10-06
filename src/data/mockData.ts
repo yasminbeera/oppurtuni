@@ -1,0 +1,578 @@
+import { Opportunity, UserProfile, SkillGapAnalysis, NotificationItem, AgentStatus } from '../types';
+
+export const initialUserProfile: UserProfile = {
+  name: 'Yasmin Beera',
+  email: 'yasmin@gmail.com',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  college: 'Dr. B.R. Ambedkar, Konaseema',
+  year: '1st Year',
+  skills: ['C++', 'Python', 'Web Development', 'Communication', 'React', 'HTML', 'CSS', 'JavaScript'],
+  interests: ['Technology', 'AI/ML', 'Design', 'Business'],
+  preferredLocation: 'Hyderabad',
+  opportunityTypes: ['Internships', 'Jobs', 'Hackathons', 'Meetups'],
+  profileCompleted: 78,
+  resumeName: 'Yasmin_Beera_Resume_2025.pdf',
+  phone: '+91 98765 43210',
+  bio: 'Passionate computer science student enthusiastic about full-stack engineering, generative AI, and human-centered product design.',
+  githubUrl: 'https://github.com/yasmin-beera',
+  linkedinUrl: 'https://linkedin.com/in/yasmin-beera'
+};
+
+export const initialOpportunities: Opportunity[] = [
+  {
+    id: 'opp-1',
+    title: 'Google Summer Internship 2025',
+    company: 'Google',
+    companyLogo: 'https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png',
+    logoBg: 'bg-white',
+    location: 'Remote',
+    workMode: 'Remote',
+    type: 'Internship',
+    matchPercentage: 92,
+    deadlineDays: 3,
+    deadlineDate: 'May 15, 2025',
+    duration: '12 weeks',
+    stipend: '₹1,20,000/month',
+    tags: ['Internship', 'High Match'],
+    whyFits: [
+      'Matches your interest in technology and development',
+      'Uses skills you already have (Python, Web Development)',
+      'Great for your career growth in tech'
+    ],
+    requiredSkills: ['Python', 'C++', 'Problem Solving', 'Communication'],
+    eligibility: 'Currently pursuing a degree (UG/PG)',
+    about: 'Work on real-world problems, build innovative solutions and learn from the best in the industry. This internship offers hands-on experience in product development, engineering, and more.',
+    overview: 'As a Software Engineering Intern at Google, you will work on our core products and services that impact billions of users globally. You will collaborate with senior engineers, participate in code reviews, and ship production-ready code.',
+    saved: true,
+    applied: true,
+    applicationStatus: 'Applied',
+    appliedDate: 'Applied on 12 Apr 2025',
+    platformSource: 'LinkedIn'
+  },
+  {
+    id: 'opp-2',
+    title: 'Frontend Developer (Fresher)',
+    company: 'Meesho',
+    companyLogo: 'https://assets.stickpng.com/images/61f7d540da3d37000473950b.png',
+    logoBg: 'bg-rose-50',
+    location: 'Hyderabad',
+    workMode: 'Hybrid',
+    type: 'Job',
+    matchPercentage: 76,
+    deadlineDays: 7,
+    deadlineDate: 'May 20, 2025',
+    duration: 'Full-time',
+    stipend: '₹8,00,000 - ₹12,00,000/yr',
+    tags: ['Job', 'Medium Match'],
+    whyFits: [
+      'Matches your React and Web Development stack',
+      'Located in your preferred city (Hyderabad)',
+      'Fresher friendly role with comprehensive mentorship'
+    ],
+    requiredSkills: ['React', 'JavaScript', 'CSS', 'TypeScript', 'Responsive Design'],
+    eligibility: 'B.Tech / BCA / MCA (2024 / 2025 Batch)',
+    about: "Join Meesho's high-speed engineering team to build scalable e-commerce interfaces powering millions of daily Indian entrepreneurs.",
+    overview: 'You will build fluid, delightful web and mobile web experiences using modern React, TypeScript, and micro-frontend architectures with low latency.',
+    saved: true,
+    applied: false,
+    applicationStatus: 'Saved',
+    platformSource: 'Naukri'
+  },
+  {
+    id: 'opp-3',
+    title: 'Tech for Good Hackathon',
+    company: 'Unstop',
+    companyLogo: 'https://d8it4huxumps7.cloudfront.net/uploads/images/unstop/branding-guidelines/icon/Unstop-Icon-Blue.png',
+    logoBg: 'bg-blue-50',
+    location: 'Online',
+    workMode: 'Online',
+    type: 'Hackathon',
+    matchPercentage: 88,
+    deadlineDays: 5,
+    deadlineDate: 'May 18, 2025',
+    duration: '48 Hours',
+    stipend: '₹3,00,000 Prize Pool',
+    tags: ['Hackathon', 'High Match'],
+    whyFits: [
+      'Aligns with your AI/ML and Design interests',
+      'Opportunity to build portfolio projects',
+      'Top performers get fast-tracked for sponsor internships'
+    ],
+    requiredSkills: ['AI/ML', 'Fullstack', 'UI/UX Design', 'Teamwork'],
+    eligibility: 'Open to all university students across India',
+    about: 'Create technological solutions addressing sustainability, healthcare, and education challenges with direct mentorship from industry leaders.',
+    overview: '48-hour virtual innovation sprint where teams ideate, prototype, and pitch high-impact solutions to a panel of venture capitalists and chief technology officers.',
+    saved: true,
+    applied: false,
+    applicationStatus: 'Saved',
+    platformSource: 'Unstop'
+  },
+  {
+    id: 'opp-4',
+    title: 'Product Design Meetup',
+    company: 'Design Club',
+    companyLogo: 'https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=100&auto=format&fit=crop&q=80',
+    logoBg: 'bg-purple-50',
+    location: 'Hyderabad',
+    workMode: 'On-site',
+    type: 'Meetup',
+    matchPercentage: 70,
+    deadlineDays: 10,
+    deadlineDate: 'May 25, 2025',
+    duration: '1 Day Workshop',
+    stipend: 'Free Entry & Swag',
+    tags: ['Meetup', 'Community'],
+    whyFits: [
+      'Great networking event for design enthusiasts in Hyderabad',
+      'Hands-on design critique sessions by Senior PMs',
+      'Connect with peers and design mentors'
+    ],
+    requiredSkills: ['UI/UX', 'Figma', 'User Research', 'Product Thinking'],
+    eligibility: 'All design, tech, and student community members welcome',
+    about: 'An interactive gathering for budding product designers, UI/UX engineers, and tech innovators in Hyderabad.',
+    overview: 'Explore user experience teardowns, design system tokenization, and Figma auto-layout masterclasses followed by an open networking mixer.',
+    saved: true,
+    applied: false,
+    applicationStatus: 'Saved',
+    appliedDate: 'Saved on 8 Apr 2025',
+    platformSource: 'Meetup'
+  },
+  {
+    id: 'opp-5',
+    title: 'Microsoft Developer Job',
+    company: 'Microsoft',
+    companyLogo: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31',
+    logoBg: 'bg-white',
+    location: 'Hyderabad',
+    workMode: 'Hybrid',
+    type: 'Job',
+    matchPercentage: 68,
+    deadlineDays: 12,
+    deadlineDate: 'May 28, 2025',
+    duration: 'Full-time',
+    stipend: '₹16,00,000 - ₹22,00,000/yr',
+    tags: ['Job', 'Enterprise'],
+    whyFits: [
+      'Top-tier engineering culture and career growth',
+      'Located in Hyderabad Microsoft IDC Campus',
+      'Excellent benefits and continuous learning credits'
+    ],
+    requiredSkills: ['C++', 'TypeScript', 'Data Structures', 'Cloud Systems'],
+    eligibility: 'Graduating 2024/2025 with CS or related degree',
+    about: 'Join Azure and Microsoft 365 developer platforms to engineer mission-critical cloud infrastructure and client apps.',
+    overview: 'Software Engineers at Microsoft invent, design, code, and deploy complex cloud services used by enterprise customers around the globe.',
+    saved: true,
+    applied: true,
+    applicationStatus: 'Interview',
+    interviewDate: 'Interview on 18 Apr 2025',
+    platformSource: 'LinkedIn'
+  },
+  {
+    id: 'opp-6',
+    title: 'TCS Hiring Challenge',
+    company: 'TCS',
+    companyLogo: 'https://companieslogo.com/img/orig/TCS.NS-7401f1bd.png?t=1631949260',
+    logoBg: 'bg-indigo-50',
+    location: 'Online',
+    workMode: 'Online',
+    type: 'Job',
+    matchPercentage: 82,
+    deadlineDays: 6,
+    deadlineDate: 'May 19, 2025',
+    duration: 'Full-time',
+    stipend: '₹4,00,000 - ₹7,50,000/yr',
+    tags: ['Contest', 'Hiring'],
+    whyFits: [
+      'Direct hiring pathway for college graduates',
+      'Comprehensive aptitude and technical evaluation',
+      'Offers Digital and Prime cadre packages'
+    ],
+    requiredSkills: ['Java', 'Python', 'Aptitude', 'SQL'],
+    eligibility: 'Final year college students (2025 Batch)',
+    about: 'TCS National Qualifier Test (NQT) national level hiring competition for entry-level software engineering positions.',
+    overview: 'Online multi-stage coding assessment followed by technical interviews for TCS Ninja, Digital, and Prime engineering tracks.',
+    saved: true,
+    applied: true,
+    applicationStatus: 'Applied',
+    appliedDate: 'Applied on 10 Apr 2025',
+    platformSource: 'Handshake'
+  },
+  {
+    id: 'opp-7',
+    title: 'Amazon SDE Intern 2025',
+    company: 'Amazon',
+    companyLogo: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg',
+    logoBg: 'bg-amber-50',
+    location: 'Bangalore / Remote',
+    workMode: 'Hybrid',
+    type: 'Internship',
+    matchPercentage: 94,
+    deadlineDays: 4,
+    deadlineDate: 'May 16, 2025',
+    duration: '6 months',
+    stipend: '₹1,10,000/month',
+    tags: ['Internship', 'High Match'],
+    whyFits: [
+      'Highest match with your core algorithms & data structures skills',
+      'Pre-placement offer (PPO) conversion rate over 80%',
+      'Exceptional mentorship by Principal Engineers'
+    ],
+    requiredSkills: ['Python', 'Java', 'Algorithms', 'System Design'],
+    eligibility: 'Pre-final & Final year students in Computer Science / IT',
+    about: 'Build high-volume distributed systems that power Amazon Web Services and retail e-commerce engines.',
+    overview: 'Interns write production software alongside full-time team members, participating in sprint cycles, design reviews, and automated CI/CD deployments.',
+    saved: false,
+    applied: false,
+    applicationStatus: undefined,
+    platformSource: 'Wellfound'
+  },
+  {
+    id: 'opp-8',
+    title: 'Uber Global Hackathon 2025',
+    company: 'Uber',
+    companyLogo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png',
+    logoBg: 'bg-black text-white',
+    location: 'Hybrid',
+    workMode: 'Hybrid',
+    type: 'Hackathon',
+    matchPercentage: 90,
+    deadlineDays: 8,
+    deadlineDate: 'May 22, 2025',
+    duration: '3 Days',
+    stipend: '₹5,00,000 Prize Pool',
+    tags: ['Hackathon', 'High Match'],
+    whyFits: [
+      'Solve real-time urban mobility & logistics challenges',
+      'Fast-track interview invitations for winning teams',
+      'Global networking with Uber engineering leadership'
+    ],
+    requiredSkills: ['Distributed Systems', 'Python', 'React', 'Mapping APIs'],
+    eligibility: 'Open to university undergraduate & postgraduate students',
+    about: 'Reimagine urban mobility, rapid grocery fulfillment, and driver safety using modern AI and geospatial routing.',
+    overview: 'Build working MVPs over 72 hours with direct support from Uber engineers, test on real sandbox APIs, and pitch to executive judges.',
+    saved: false,
+    applied: false,
+    applicationStatus: undefined,
+    platformSource: 'Unstop'
+  },
+  {
+    id: 'opp-9',
+    title: 'Kailash Satyarthi Youth Fellowship 2025',
+    company: 'Satyarthi Foundation',
+    companyLogo: 'https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?w=100&auto=format&fit=crop&q=80',
+    logoBg: 'bg-emerald-50',
+    location: 'New Delhi / Hybrid',
+    workMode: 'Hybrid',
+    type: 'Fellowship',
+    matchPercentage: 89,
+    deadlineDays: 9,
+    deadlineDate: 'May 24, 2025',
+    duration: '1 Year',
+    stipend: '₹45,000/month Grant',
+    tags: ['Fellowship', 'Social Impact'],
+    whyFits: [
+      'Empowers students to spearhead grassroots digital rights initiatives',
+      'Provides executive mentorship and government policymaking exposure',
+      'Full monthly living stipend and technology grant'
+    ],
+    requiredSkills: ['Leadership', 'Communication', 'Research', 'Community Building'],
+    eligibility: 'Undergraduates & recent graduates under 26 years',
+    about: 'A prestigious youth leadership fellowship creating grassroots champions for child rights and digital literacy.',
+    overview: 'Fellows spend 12 months working on innovative community solutions, deploying technology interventions and presenting at policy summits.',
+    saved: true,
+    applied: false,
+    applicationStatus: 'Saved',
+    platformSource: 'Devfolio'
+  },
+  {
+    id: 'opp-10',
+    title: 'NASA Space Apps Global Competition',
+    company: 'NASA Open Innovation',
+    companyLogo: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&auto=format&fit=crop&q=80',
+    logoBg: 'bg-indigo-950 text-white',
+    location: 'Global / Virtual',
+    workMode: 'Online',
+    type: 'Competition',
+    matchPercentage: 91,
+    deadlineDays: 14,
+    deadlineDate: 'May 29, 2025',
+    duration: '48 Hours',
+    stipend: '$10,000 Global Award',
+    tags: ['Competition', 'AI & Space'],
+    whyFits: [
+      'Solve Earth & space challenges using real NASA satellite datasets',
+      'Work with global mentors in astrophysics and machine learning',
+      'Invitation to attend NASA rocket launch for winners'
+    ],
+    requiredSkills: ['Python', 'AI/ML', 'Data Analysis', 'Web Development'],
+    eligibility: 'Open to all university students and coders worldwide',
+    about: 'The largest global hackathon and innovation competition using NASA open data to address terrestrial and extraterrestrial problems.',
+    overview: 'Teams of coders, scientists, and designers build software solutions solving climate change, exoplanet discovery, and lunar exploration challenges.',
+    saved: false,
+    applied: true,
+    applicationStatus: 'Applied',
+    appliedDate: 'Applied on 14 Apr 2025',
+    platformSource: 'Unstop'
+  },
+  {
+    id: 'opp-11',
+    title: 'Google Generation Scholarship (APAC)',
+    company: 'Google',
+    companyLogo: 'https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png',
+    logoBg: 'bg-white',
+    location: 'India & APAC',
+    workMode: 'Online',
+    type: 'Scholarship',
+    matchPercentage: 96,
+    deadlineDays: 2,
+    deadlineDate: 'May 14, 2025',
+    duration: 'Academic Year',
+    stipend: '$2,500 USD Tuition Award',
+    tags: ['Scholarship', 'Women in Tech'],
+    whyFits: [
+      'Highest match with your current 1st year CS credentials',
+      'Substantial financial grant applied towards educational expenses',
+      'Includes invite to exclusive Google Student Virtual Retreat'
+    ],
+    requiredSkills: ['Problem Solving', 'Leadership', 'Academics', 'Communication'],
+    eligibility: 'Currently enrolled 1st or 2nd year undergraduate women in Computer Science',
+    about: 'Established to help aspiring computer scientists excel in technology and become active leaders in the field.',
+    overview: 'Selected scholars will receive financial assistance for tuition and participate in career development webinars and mentorship circles with Google engineers.',
+    saved: true,
+    applied: true,
+    applicationStatus: 'Assessment',
+    appliedDate: 'Applied on 05 Apr 2025',
+    platformSource: 'Google Careers'
+  },
+  {
+    id: 'opp-12',
+    title: 'Generative AI & Agent Architecture Workshop',
+    company: 'Anthropic & DeepLearning.AI',
+    companyLogo: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80',
+    logoBg: 'bg-purple-50',
+    location: 'Online Live Masterclass',
+    workMode: 'Online',
+    type: 'Workshop',
+    matchPercentage: 87,
+    deadlineDays: 5,
+    deadlineDate: 'May 17, 2025',
+    duration: '2 Days Hands-On',
+    stipend: 'Free Certificate + GPU Credits',
+    tags: ['Workshop', 'GenAI'],
+    whyFits: [
+      'Build real-world multi-agent systems and MCP protocol tools',
+      'Free $200 cloud compute credits for all student participants',
+      'Verified completion credential recognized by top AI startups'
+    ],
+    requiredSkills: ['Python', 'APIs', 'LLMs', 'Prompt Engineering'],
+    eligibility: 'All college engineering students interested in Applied AI',
+    about: 'An intensive interactive workshop teaching students how to build autonomous agentic workflows using modern foundation models.',
+    overview: 'Hands-on live coding sessions covering tool calling, vector retrieval, evaluation metrics, and multi-agent coordination.',
+    saved: true,
+    applied: false,
+    applicationStatus: 'Saved',
+    platformSource: 'Meetup'
+  }
+];
+
+export const skillGapDataMap: Record<string, SkillGapAnalysis> = {
+  'opp-1': {
+    opportunityId: 'opp-1',
+    roleTitle: 'Google Summer Internship 2025',
+    company: 'Google',
+    matchPercentage: 92,
+    currentSkills: ['HTML', 'CSS', 'JavaScript', 'React', 'Communication', 'Python', 'C++'],
+    missingSkills: ['TypeScript', 'Node.js', 'System Design', 'Git'],
+    learningItems: [
+      {
+        id: 'course-1',
+        title: 'TypeScript for Beginners',
+        duration: '4 weeks',
+        provider: 'Coursera',
+        skill: 'TypeScript',
+        status: 'In Progress',
+        progress: 60,
+        rating: 4.8
+      },
+      {
+        id: 'course-2',
+        title: 'Node.js Crash Course',
+        duration: '2 weeks',
+        provider: 'freeCodeCamp',
+        skill: 'Node.js',
+        status: 'Not Started',
+        progress: 0,
+        rating: 4.9
+      },
+      {
+        id: 'course-3',
+        title: 'System Design Basics',
+        duration: '3 weeks',
+        provider: 'Educative',
+        skill: 'System Design',
+        status: 'Not Started',
+        progress: 0,
+        rating: 4.7
+      },
+      {
+        id: 'course-4',
+        title: 'Git & GitHub Collaboration Mastery',
+        duration: '1 week',
+        provider: 'Udemy',
+        skill: 'Git',
+        status: 'Completed',
+        progress: 100,
+        rating: 4.9
+      }
+    ]
+  },
+  'opp-2': {
+    opportunityId: 'opp-2',
+    roleTitle: 'Frontend Developer (Fresher)',
+    company: 'Meesho',
+    matchPercentage: 76,
+    currentSkills: ['HTML', 'CSS', 'JavaScript', 'React', 'Communication'],
+    missingSkills: ['TypeScript', 'Next.js', 'Tailwind CSS', 'Redux Toolkit', 'Jest'],
+    learningItems: [
+      {
+        id: 'course-1',
+        title: 'TypeScript for Beginners',
+        duration: '4 weeks',
+        provider: 'Coursera',
+        skill: 'TypeScript',
+        status: 'In Progress',
+        progress: 60,
+        rating: 4.8
+      },
+      {
+        id: 'course-5',
+        title: 'Next.js 14 App Router Deep Dive',
+        duration: '3 weeks',
+        provider: 'Vercel Academy',
+        skill: 'Next.js',
+        status: 'Not Started',
+        progress: 0,
+        rating: 4.9
+      },
+      {
+        id: 'course-6',
+        title: 'Frontend Testing with Jest & React Testing Library',
+        duration: '2 weeks',
+        provider: 'Frontend Masters',
+        skill: 'Jest',
+        status: 'Not Started',
+        progress: 0,
+        rating: 4.8
+      }
+    ]
+  },
+  'opp-5': {
+    opportunityId: 'opp-5',
+    roleTitle: 'Microsoft Developer Job',
+    company: 'Microsoft',
+    matchPercentage: 68,
+    currentSkills: ['C++', 'Python', 'Algorithms', 'Communication'],
+    missingSkills: ['Cloud Architecture', 'Azure Fundamentals', 'System Design', 'C# / .NET'],
+    learningItems: [
+      {
+        id: 'course-3',
+        title: 'System Design Basics',
+        duration: '3 weeks',
+        provider: 'Educative',
+        skill: 'System Design',
+        status: 'Not Started',
+        progress: 0,
+        rating: 4.7
+      },
+      {
+        id: 'course-7',
+        title: 'Microsoft Azure AZ-900 Fundamentals',
+        duration: '2 weeks',
+        provider: 'Microsoft Learn',
+        skill: 'Azure Fundamentals',
+        status: 'Not Started',
+        progress: 0,
+        rating: 4.9
+      }
+    ]
+  }
+};
+
+export const initialNotifications: NotificationItem[] = [
+  {
+    id: 'notif-1',
+    title: 'Complete Your Profile',
+    message: 'Add a resume, skills and interests to get better AI matches.',
+    time: '2 hours ago',
+    type: 'profile',
+    read: false,
+    actionPage: 'create-profile',
+    actionLabel: 'Complete Now'
+  },
+  {
+    id: 'notif-2',
+    title: 'Opportunity saved! ✓',
+    message: 'Google Summer Internship 2025 was added to your saved list.',
+    time: '5 hours ago',
+    type: 'saved',
+    read: false,
+    actionPage: 'saved-opportunities',
+    actionLabel: 'View Saved'
+  },
+  {
+    id: 'notif-3',
+    title: 'New match found! 🚀',
+    message: 'Amazon SDE Intern matches 94% of your preferred profile.',
+    time: '1 day ago',
+    type: 'match',
+    read: false,
+    actionPage: 'opportunities',
+    actionLabel: 'Explore'
+  },
+  {
+    id: 'notif-4',
+    title: 'Deadline in 3 days ⏰',
+    message: 'Google Summer Internship 2025 closes on May 15, 2025.',
+    time: '1 day ago',
+    type: 'deadline',
+    read: true,
+    actionPage: 'opportunities',
+    actionLabel: 'Apply Now'
+  }
+];
+
+export const aiAgentsList: AgentStatus[] = [
+  {
+    id: 'agent-1',
+    name: 'Profile Agent',
+    role: 'Profile Understanding',
+    description: 'Understands your skills, interests, year of study, and target career goals.',
+    status: 'Completed',
+    progressPercent: 100
+  },
+  {
+    id: 'agent-2',
+    name: 'Scout Agents',
+    role: 'Cross-Platform Discovery',
+    description: 'Scouting 9+ opportunity platforms across internships, hackathons, and jobs...',
+    status: 'In Progress',
+    platforms: ['LinkedIn', 'Internshala', 'Wellfound', 'Devfolio', 'Unstop', 'Meetup', 'Company Portals', 'University Hubs'],
+    progressPercent: 78
+  },
+  {
+    id: 'agent-3',
+    name: 'Matching Agent',
+    role: 'Compatibility Calculation',
+    description: 'Calculating multi-factor compatibility scores and eliminating expired postings.',
+    status: 'Pending',
+    progressPercent: 45
+  },
+  {
+    id: 'agent-4',
+    name: 'Insight Agent',
+    role: 'Fit Explanation & Skill Gaps',
+    description: 'Generating personalized fit rationales and highlighting skill gap bridges.',
+    status: 'Pending',
+    progressPercent: 20
+  }
+];
