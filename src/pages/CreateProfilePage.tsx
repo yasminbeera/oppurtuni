@@ -22,7 +22,8 @@ import {
   Download, 
   ExternalLink, 
   BrainCircuit, 
-  TrendingUp
+  TrendingUp,
+  Info
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ProjectItem, CertificationItem, PublicPlatformItem } from '../types';
@@ -46,14 +47,14 @@ export const CreateProfilePage: React.FC = () => {
 
   const [activeSection, setActiveSection] = useState<'basic' | 'platforms' | 'skills' | 'projects' | 'resume' | 'analysis'>('basic');
 
-  // Basic Form States
-  const [fullName, setFullName] = useState(userProfile.name);
-  const [email, setEmail] = useState(userProfile.email);
-  const [phone, setPhone] = useState(userProfile.phone || '+91 98765 43210');
-  const [college, setCollege] = useState(userProfile.college);
-  const [year, setYear] = useState(userProfile.year);
-  const [cgpa, setCgpa] = useState(userProfile.cgpa || '9.2');
-  const [preferredLocation, setPreferredLocation] = useState(userProfile.preferredLocation);
+  // Basic Form States - Starting EMPTY
+  const [fullName, setFullName] = useState(userProfile.name || '');
+  const [email, setEmail] = useState(userProfile.email || '');
+  const [phone, setPhone] = useState(userProfile.phone || '');
+  const [college, setCollege] = useState(userProfile.college || '');
+  const [year, setYear] = useState(userProfile.year || '1st Year');
+  const [cgpa, setCgpa] = useState(userProfile.cgpa || '');
+  const [preferredLocation, setPreferredLocation] = useState(userProfile.preferredLocation || '');
 
   // Verification Modals
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -61,36 +62,31 @@ export const CreateProfilePage: React.FC = () => {
   const [emailCode, setEmailCode] = useState('');
   const [phoneCode, setPhoneCode] = useState('');
 
-  // Platforms
+  // Platforms - Empty by default
   const platformOptions = ['GitHub', 'LinkedIn', 'LeetCode', 'CodeChef', 'HackerRank', 'Kaggle', 'Behance', 'Dribbble', 'Portfolio', 'Other'];
-  const [platforms, setPlatforms] = useState<PublicPlatformItem[]>(userProfile.publicPlatforms || [
-    { platform: 'GitHub', url: 'https://github.com/yasmin-beera' },
-    { platform: 'LinkedIn', url: 'https://linkedin.com/in/yasmin-beera' },
-    { platform: 'LeetCode', url: 'https://leetcode.com/u/yasmin_beera' },
-    { platform: 'Portfolio', url: 'https://yasminbeera.dev' }
-  ]);
+  const [platforms, setPlatforms] = useState<PublicPlatformItem[]>(userProfile.publicPlatforms || []);
   const [newPlatformType, setNewPlatformType] = useState('GitHub');
   const [newPlatformUrl, setNewPlatformUrl] = useState('');
 
-  // Skills & Interests
+  // Skills & Interests - Empty selection initially
   const allPopularSkills = [
-    'React', 'Python', 'JavaScript', 'TypeScript', 'Java', 'C++', 'Node.js', 
-    'Next.js', 'Tailwind CSS', 'SQL', 'FastAPI', 'HTML', 'CSS', 'UI/UX', 
-    'Figma', 'Machine Learning', 'Data Science', 'Cloud', 'Cybersecurity', 
-    'Product Management', 'Git', 'Docker', 'PostgreSQL', 'GraphQL'
+    'React', 'Python', 'Java', 'JavaScript', 'SQL', 'Machine Learning', 'UI/UX',
+    'TypeScript', 'C++', 'Node.js', 'Next.js', 'Tailwind CSS', 'FastAPI', 'HTML', 'CSS', 
+    'Figma', 'Data Science', 'Cloud', 'Cybersecurity', 'Product Management', 'Git', 'Docker', 
+    'PostgreSQL', 'GraphQL'
   ];
 
   const allPopularInterests = [
-    'AI', 'Web Development', 'Data Science', 'Startups', 'Cybersecurity', 
-    'Design', 'Product', 'Research', 'Finance', 'Robotics', 'Open Source', 
+    'Artificial Intelligence', 'Web Development', 'Data Science', 'Cybersecurity', 
+    'Startups', 'Research', 'Design', 'Product', 'Finance', 'Robotics', 'Open Source', 
     'Mobile Apps', 'Cloud Computing'
   ];
 
-  const [skills, setSkills] = useState<string[]>([...userProfile.skills]);
+  const [skills, setSkills] = useState<string[]>(userProfile.skills || []);
   const [customSkillInput, setCustomSkillInput] = useState('');
-  const [interests, setInterests] = useState<string[]>([...userProfile.interests]);
+  const [interests, setInterests] = useState<string[]>(userProfile.interests || []);
 
-  // Projects
+  // Projects - Empty by default
   const [projectsList, setProjectsList] = useState<ProjectItem[]>(userProfile.projects || []);
   const [isAddingProject, setIsAddingProject] = useState(false);
   const [projName, setProjName] = useState('');
@@ -99,7 +95,7 @@ export const CreateProfilePage: React.FC = () => {
   const [projGithub, setProjGithub] = useState('');
   const [projLink, setProjLink] = useState('');
 
-  // Certifications
+  // Certifications - Empty by default
   const [certificationsList, setCertificationsList] = useState<CertificationItem[]>(userProfile.certifications || []);
   const [isAddingCert, setIsAddingCert] = useState(false);
   const [certName, setCertName] = useState('');
@@ -108,41 +104,75 @@ export const CreateProfilePage: React.FC = () => {
   const [certId, setCertId] = useState('');
   const [certUrl, setCertUrl] = useState('');
 
-  // Resume & Portfolio
-  const [resumeFileName, setResumeFileName] = useState<string | null>(userProfile.resumeName || 'Yasmin_Beera_Resume_2025.pdf');
+  // Resume & Portfolio - Empty by default
+  const [resumeFileName, setResumeFileName] = useState<string | null>(userProfile.resumeName || null);
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
 
-  // Computed AI Profile Analysis (Works WITH or WITHOUT resume!)
+  // Dynamic AI Profile Analysis computed directly from what user has entered
   const profileAnalysis = useMemo(() => {
-    let score = 50;
-    if (fullName && email && college) score += 15;
+    let score = 0;
+    const missingSections: string[] = [];
+
+    if (fullName.trim()) score += 15; else missingSections.push('Full Name');
+    if (email.trim()) score += 10; else missingSections.push('Email Address');
+    if (college.trim()) score += 10; else missingSections.push('College / University');
+    if (cgpa.trim()) score += 5;
+    if (preferredLocation.trim()) score += 5;
     if (userProfile.emailVerified) score += 5;
     if (userProfile.phoneVerified) score += 5;
-    if (skills.length >= 5) score += 10;
-    if (projectsList.length >= 2) score += 8;
-    if (certificationsList.length >= 1) score += 7;
+    
+    if (skills.length > 0) {
+      score += Math.min(20, skills.length * 4);
+    } else {
+      missingSections.push('Skills');
+    }
+
+    if (interests.length > 0) {
+      score += 5;
+    } else {
+      missingSections.push('Domain Interests');
+    }
+
+    if (platforms.length > 0) score += 5;
+    if (projectsList.length > 0) score += Math.min(10, projectsList.length * 5); else missingSections.push('Projects');
+    if (certificationsList.length > 0) score += 5;
     if (resumeFileName) score += 5;
 
     const completeness = Math.min(100, score);
 
-    const strengths = [
-      'Frontend Engineering & Modern UI Stack (React, Tailwind)',
-      'Algorithmic Problem Solving (Python, C++)',
-      'Contextual AI & Full-Stack Prototyping'
-    ];
+    const strengths: string[] = [];
+    if (skills.length > 0) {
+      strengths.push(`Active Proficiencies: ${skills.slice(0, 3).join(', ')}`);
+    }
+    if (projectsList.length > 0) {
+      strengths.push(`Practical Project Experience (${projectsList.length} ${projectsList.length === 1 ? 'project' : 'projects'} built)`);
+    }
+    if (platforms.length > 0) {
+      strengths.push(`Public Developer Handles (${platforms.map(p => p.platform).join(', ')})`);
+    }
+    if (certificationsList.length > 0) {
+      strengths.push(`Verified Credentials (${certificationsList.length} completed)`);
+    }
 
-    const recommended = ['TypeScript & Next.js 14', 'System Architecture Basics', 'API Testing & CI/CD'];
-    const readiness = completeness >= 85 ? 'High (Ready for Top Tier SDE Roles)' : completeness >= 70 ? 'Moderate (Ready for Internship Discovery)' : 'Building Foundation';
+    const recommended = ['System Design Basics', 'TypeScript & Cloud APIs', 'Git Workflows & CI/CD'];
+    const readiness = completeness >= 80 
+      ? 'High (Ready for Top Tier Opportunities)' 
+      : completeness >= 50 
+      ? 'Moderate (Ready for Internship Discovery)' 
+      : completeness > 0 
+      ? 'Building Foundation' 
+      : 'Profile Not Started';
 
     return {
       completeness,
+      missingSections,
       strengths,
       recommended,
       readiness,
-      careerDirection: 'Full-Stack Software Engineer & AI Systems Developer',
+      careerDirection: interests.length > 0 ? `${interests.join(' & ')} Specialist` : 'Software Engineer & Tech Professional',
       matchPower: `${completeness}%`
     };
-  }, [fullName, email, college, skills, projectsList, certificationsList, resumeFileName, userProfile.emailVerified, userProfile.phoneVerified]);
+  }, [fullName, email, college, cgpa, preferredLocation, skills, interests, platforms, projectsList, certificationsList, resumeFileName, userProfile.emailVerified, userProfile.phoneVerified]);
 
   // Handler functions
   const handleSaveBasic = () => {
@@ -153,7 +183,8 @@ export const CreateProfilePage: React.FC = () => {
       college,
       year,
       cgpa,
-      preferredLocation
+      preferredLocation,
+      profileCompleted: profileAnalysis.completeness
     });
   };
 
@@ -215,7 +246,7 @@ export const CreateProfilePage: React.FC = () => {
       tech: projTech.split(',').map(t => t.trim()).filter(Boolean),
       github: projGithub.trim() || undefined,
       link: projLink.trim() || undefined,
-      startDate: 'Jan 2025',
+      startDate: '2025',
       endDate: 'Present'
     };
     const updated = [newProj, ...projectsList];
@@ -241,7 +272,7 @@ export const CreateProfilePage: React.FC = () => {
     const newCert: CertificationItem = {
       id: `cert-${Date.now()}`,
       name: certName.trim(),
-      issuer: certIssuer.trim() || 'Coursera / Industry Issuer',
+      issuer: certIssuer.trim() || 'Certificate Issuer',
       issueDate: certDate.trim() || '2025',
       credentialId: certId.trim() || undefined,
       credentialUrl: certUrl.trim() || undefined
@@ -400,7 +431,8 @@ export const CreateProfilePage: React.FC = () => {
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-lavender-500/20 focus:border-lavender-500"
+                    placeholder="e.g. Ananya Sharma"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-lavender-500/20 focus:border-lavender-500 placeholder:text-slate-400"
                   />
                 </div>
 
@@ -410,7 +442,8 @@ export const CreateProfilePage: React.FC = () => {
                     type="text"
                     value={college}
                     onChange={(e) => setCollege(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-lavender-500/20 focus:border-lavender-500"
+                    placeholder="e.g. VIT University"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-lavender-500/20 focus:border-lavender-500 placeholder:text-slate-400"
                   />
                 </div>
 
@@ -435,8 +468,8 @@ export const CreateProfilePage: React.FC = () => {
                     type="text"
                     value={cgpa}
                     onChange={(e) => setCgpa(e.target.value)}
-                    placeholder="e.g. 9.2 / 10.0"
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                    placeholder="e.g. 8.6"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -446,8 +479,8 @@ export const CreateProfilePage: React.FC = () => {
                     type="text"
                     value={preferredLocation}
                     onChange={(e) => setPreferredLocation(e.target.value)}
-                    placeholder="e.g. Hyderabad, Bangalore, Remote"
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                    placeholder="e.g. Hyderabad, Telangana"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -462,7 +495,13 @@ export const CreateProfilePage: React.FC = () => {
                     ) : (
                       <button
                         type="button"
-                        onClick={() => setIsEmailModalOpen(true)}
+                        onClick={() => {
+                          if (!email.trim()) {
+                            showToast('Please enter an email address first', 'info');
+                            return;
+                          }
+                          setIsEmailModalOpen(true);
+                        }}
                         className="text-[11px] font-bold text-lavender-700 hover:underline cursor-pointer"
                       >
                         Verify Email
@@ -473,7 +512,8 @@ export const CreateProfilePage: React.FC = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                    placeholder="e.g. ananya.sharma@gmail.com"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -488,7 +528,13 @@ export const CreateProfilePage: React.FC = () => {
                     ) : (
                       <button
                         type="button"
-                        onClick={() => setIsPhoneModalOpen(true)}
+                        onClick={() => {
+                          if (!phone.trim()) {
+                            showToast('Please enter a mobile number first', 'info');
+                            return;
+                          }
+                          setIsPhoneModalOpen(true);
+                        }}
                         className="text-[11px] font-bold text-lavender-700 hover:underline cursor-pointer"
                       >
                         Verify Number
@@ -499,7 +545,8 @@ export const CreateProfilePage: React.FC = () => {
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                    placeholder="e.g. +91 98765 43210"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -528,48 +575,56 @@ export const CreateProfilePage: React.FC = () => {
                 <p className="text-xs text-slate-500">Connect your developer handles to strengthen your profile verification</p>
               </div>
 
-              {/* Existing Platforms List */}
+              {/* Existing Platforms List or Empty State */}
               <div className="space-y-3">
-                {platforms.map((plat, idx) => (
-                  <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold text-xs shrink-0">
-                        {plat.platform.slice(0, 2).toUpperCase()}
+                {platforms.length > 0 ? (
+                  platforms.map((plat, idx) => (
+                    <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold text-xs shrink-0">
+                          {plat.platform.slice(0, 2).toUpperCase()}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-slate-800">{plat.platform}</p>
+                          <a 
+                            href={plat.url} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="text-[11px] text-lavender-700 hover:underline truncate block"
+                          >
+                            {plat.url}
+                          </a>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-slate-800">{plat.platform}</p>
-                        <a 
-                          href={plat.url} 
-                          target="_blank" 
-                          rel="noreferrer" 
-                          className="text-[11px] text-lavender-700 hover:underline truncate block"
-                        >
-                          {plat.url}
-                        </a>
-                      </div>
-                    </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
-                      <a
-                        href={plat.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800 cursor-pointer"
-                        title="Open profile"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => handleRemovePlatform(idx)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer"
-                        title="Remove"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <a
+                          href={plat.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800 cursor-pointer"
+                          title="Open profile"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleRemovePlatform(idx)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer"
+                          title="Remove"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="p-6 text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                    <Globe className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                    <p className="text-xs font-bold text-slate-600">No public platform handles linked yet</p>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Add your GitHub, LinkedIn, or coding profile URLs below</p>
                   </div>
-                ))}
+                )}
               </div>
 
               {/* Add New Platform */}
@@ -588,10 +643,22 @@ export const CreateProfilePage: React.FC = () => {
 
                   <input
                     type="url"
-                    placeholder={`https://${newPlatformType.toLowerCase()}.com/username`}
+                    placeholder={
+                      newPlatformType === 'GitHub' 
+                        ? 'e.g. https://github.com/yourusername'
+                        : newPlatformType === 'LinkedIn'
+                        ? 'e.g. https://linkedin.com/in/yourusername'
+                        : newPlatformType === 'LeetCode'
+                        ? 'e.g. https://leetcode.com/u/yourusername'
+                        : newPlatformType === 'CodeChef'
+                        ? 'e.g. https://codechef.com/users/yourusername'
+                        : newPlatformType === 'Portfolio'
+                        ? 'e.g. https://yourportfolio.com'
+                        : `e.g. https://${newPlatformType.toLowerCase()}.com/yourusername`
+                    }
                     value={newPlatformUrl}
                     onChange={(e) => setNewPlatformUrl(e.target.value)}
-                    className="flex-1 w-full px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl focus:bg-white"
+                    className="flex-1 w-full px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl focus:bg-white placeholder:text-slate-400"
                   />
 
                   <button
@@ -639,9 +706,11 @@ export const CreateProfilePage: React.FC = () => {
                   <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                     Selected Skills ({skills.length})
                   </label>
-                  <span className="text-[11px] text-slate-400">Click a chip to remove</span>
+                  {skills.length > 0 && (
+                    <span className="text-[11px] text-slate-400">Click a chip to remove</span>
+                  )}
                 </div>
-                <div className="flex flex-wrap gap-2 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 min-h-16">
+                <div className="flex flex-wrap gap-2 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 min-h-16 items-center">
                   {skills.length > 0 ? (
                     skills.map((skill, i) => (
                       <span
@@ -654,7 +723,9 @@ export const CreateProfilePage: React.FC = () => {
                       </span>
                     ))
                   ) : (
-                    <span className="text-xs text-slate-400 italic">No skills selected yet. Choose from below or type custom skill.</span>
+                    <span className="text-xs text-slate-400 italic">
+                      No skills selected yet. Click the suggested tags below or add a custom skill.
+                    </span>
                   )}
                 </div>
               </div>
@@ -667,7 +738,7 @@ export const CreateProfilePage: React.FC = () => {
                   value={customSkillInput}
                   onChange={(e) => setCustomSkillInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAddCustomSkill()}
-                  className="flex-1 px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                  className="flex-1 px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white placeholder:text-slate-400"
                 />
                 <button
                   type="button"
@@ -679,9 +750,9 @@ export const CreateProfilePage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Popular Skill Suggestions */}
+              {/* Suggested Skills */}
               <div className="space-y-2">
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Suggested & Popular Skills</span>
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Suggested Skills</span>
                 <div className="flex flex-wrap gap-1.5">
                   {allPopularSkills.map((sk) => {
                     const isSelected = skills.includes(sk);
@@ -706,9 +777,35 @@ export const CreateProfilePage: React.FC = () => {
 
               {/* Domain Interests */}
               <div className="space-y-2 pt-4 border-t border-slate-100">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
-                  Domain Interests ({interests.length})
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+                    Domain Interests ({interests.length})
+                  </label>
+                  {interests.length > 0 && (
+                    <span className="text-[11px] text-slate-400">Click to toggle</span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 min-h-12 items-center mb-2">
+                  {interests.length > 0 ? (
+                    interests.map((interest, i) => (
+                      <span
+                        key={i}
+                        onClick={() => handleToggleInterest(interest)}
+                        className="px-3 py-1 rounded-xl bg-gradient-to-r from-softblue-600 to-indigo-600 text-white font-bold text-xs shadow-2xs flex items-center gap-1.5 cursor-pointer hover:opacity-90"
+                      >
+                        <span>{interest}</span>
+                        <X className="w-3 h-3" />
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">
+                      No interests selected yet. Choose suggested interest domains below.
+                    </span>
+                  )}
+                </div>
+
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Suggested Interests</span>
                 <div className="flex flex-wrap gap-1.5">
                   {allPopularInterests.map((interest) => {
                     const isSelected = interests.includes(interest);
@@ -768,7 +865,7 @@ export const CreateProfilePage: React.FC = () => {
                     className="px-3 py-1.5 rounded-xl bg-lavender-50 hover:bg-lavender-100 text-lavender-800 font-bold text-xs border border-lavender-200 flex items-center gap-1.5 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Add Project</span>
+                    <span>+ Add Project</span>
                   </button>
                 </div>
 
@@ -779,40 +876,40 @@ export const CreateProfilePage: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <input
                         type="text"
-                        placeholder="Project Name (e.g. AI Search Engine)"
+                        placeholder="e.g. AI Resume Analyzer"
                         value={projName}
                         onChange={(e) => setProjName(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                         required
                       />
                       <input
                         type="text"
-                        placeholder="Technologies (comma separated, e.g. React, Python)"
+                        placeholder="e.g. React, Python, FastAPI"
                         value={projTech}
                         onChange={(e) => setProjTech(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                       />
                       <input
                         type="url"
-                        placeholder="GitHub Repository URL"
+                        placeholder="e.g. https://github.com/yourusername/project"
                         value={projGithub}
                         onChange={(e) => setProjGithub(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                       />
                       <input
                         type="url"
-                        placeholder="Live Demo URL (optional)"
+                        placeholder="e.g. https://project-demo.com (optional)"
                         value={projLink}
                         onChange={(e) => setProjLink(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                       />
                       <div className="sm:col-span-2">
                         <textarea
                           rows={2}
-                          placeholder="Brief description of what you built and outcomes..."
+                          placeholder="e.g. Built an AI-powered resume analysis tool with real-time scoring..."
                           value={projDesc}
                           onChange={(e) => setProjDesc(e.target.value)}
-                          className="w-full px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                          className="w-full px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -834,38 +931,46 @@ export const CreateProfilePage: React.FC = () => {
                   </form>
                 )}
 
-                {/* Projects List */}
+                {/* Projects List or Empty State */}
                 <div className="space-y-3">
-                  {projectsList.map(proj => (
-                    <div key={proj.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
-                      <div className="space-y-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-sm text-slate-900">{proj.name}</h4>
-                          {proj.link && (
-                            <a href={proj.link} target="_blank" rel="noreferrer" className="text-lavender-600 hover:text-lavender-800">
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          )}
+                  {projectsList.length > 0 ? (
+                    projectsList.map(proj => (
+                      <div key={proj.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div className="space-y-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-sm text-slate-900">{proj.name}</h4>
+                            {proj.link && (
+                              <a href={proj.link} target="_blank" rel="noreferrer" className="text-lavender-600 hover:text-lavender-800">
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-600">{proj.description}</p>
+                          <div className="flex flex-wrap gap-1.5 pt-1">
+                            {proj.tech.map((t, i) => (
+                              <span key={i} className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <p className="text-xs text-slate-600">{proj.description}</p>
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {proj.tech.map((t, i) => (
-                            <span key={i} className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteProj(proj.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 cursor-pointer"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteProj(proj.id)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 cursor-pointer"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-6 text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                      <Briefcase className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                      <p className="text-xs font-bold text-slate-600">No projects added yet</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">Click "+ Add Project" to highlight your work</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
 
@@ -882,7 +987,7 @@ export const CreateProfilePage: React.FC = () => {
                     className="px-3 py-1.5 rounded-xl bg-lavender-50 hover:bg-lavender-100 text-lavender-800 font-bold text-xs border border-lavender-200 flex items-center gap-1.5 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Add Certification</span>
+                    <span>+ Add Certification</span>
                   </button>
                 </div>
 
@@ -891,32 +996,32 @@ export const CreateProfilePage: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <input
                         type="text"
-                        placeholder="Certification Title (e.g. AWS Cloud Practitioner)"
+                        placeholder="e.g. AWS Cloud Practitioner"
                         value={certName}
                         onChange={(e) => setCertName(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                         required
                       />
                       <input
                         type="text"
-                        placeholder="Issuing Organization (e.g. AWS, Meta)"
+                        placeholder="e.g. Amazon Web Services"
                         value={certIssuer}
                         onChange={(e) => setCertIssuer(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                       />
                       <input
                         type="text"
-                        placeholder="Issue Date (e.g. Nov 2024)"
+                        placeholder="e.g. Nov 2024"
                         value={certDate}
                         onChange={(e) => setCertDate(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                       />
                       <input
                         type="url"
-                        placeholder="Credential Verification URL"
+                        placeholder="e.g. https://aws.amazon.com/verify/credential-id"
                         value={certUrl}
                         onChange={(e) => setCertUrl(e.target.value)}
-                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl"
+                        className="px-3 py-2 text-xs bg-white border border-lavender-200 rounded-xl placeholder:text-slate-400"
                       />
                     </div>
                     <div className="flex justify-end gap-2">
@@ -938,27 +1043,35 @@ export const CreateProfilePage: React.FC = () => {
                 )}
 
                 <div className="space-y-2.5">
-                  {certificationsList.map(cert => (
-                    <div key={cert.id} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-mint-100 text-mint-700 flex items-center justify-center font-bold text-xs">
-                          <Award className="w-4 h-4" />
+                  {certificationsList.length > 0 ? (
+                    certificationsList.map(cert => (
+                      <div key={cert.id} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-mint-100 text-mint-700 flex items-center justify-center font-bold text-xs">
+                            <Award className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-slate-900">{cert.name}</p>
+                            <p className="text-[11px] text-slate-500">{cert.issuer} • Issued {cert.issueDate}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-xs font-bold text-slate-900">{cert.name}</p>
-                          <p className="text-[11px] text-slate-500">{cert.issuer} • Issued {cert.issueDate}</p>
-                        </div>
-                      </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteCert(cert.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 cursor-pointer"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteCert(cert.id)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 cursor-pointer"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-6 text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                      <Award className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                      <p className="text-xs font-bold text-slate-600">No certifications added yet</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">Click "+ Add Certification" to verify credentials</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
 
@@ -998,16 +1111,20 @@ export const CreateProfilePage: React.FC = () => {
                       <FileText className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900">Current Uploaded Resume</h4>
+                      <h4 className="text-sm font-bold text-slate-900">Resume Status</h4>
                       <p className="text-xs text-slate-500">
-                        {resumeFileName ? resumeFileName : 'No resume uploaded yet (Analysis still works!)'}
+                        {resumeFileName ? resumeFileName : 'No resume uploaded'}
                       </p>
                     </div>
                   </div>
 
-                  {resumeFileName && (
+                  {resumeFileName ? (
                     <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200">
                       ✓ Active File
+                    </span>
+                  ) : (
+                    <span className="text-xs font-medium text-slate-400 bg-slate-100 px-2.5 py-1 rounded-xl">
+                      Optional
                     </span>
                   )}
                 </div>
@@ -1015,7 +1132,7 @@ export const CreateProfilePage: React.FC = () => {
                 <div className="flex flex-wrap items-center gap-3">
                   <label className="px-4 py-2 rounded-xl bg-lavender-700 hover:bg-lavender-800 text-white font-bold text-xs flex items-center gap-2 cursor-pointer transition-colors shadow-xs">
                     <Upload className="w-3.5 h-3.5" />
-                    <span>{resumeFileName ? 'Replace Resume (PDF/DOCX)' : 'Upload Resume (PDF/DOCX)'}</span>
+                    <span>{resumeFileName ? 'Replace Resume (PDF/DOCX)' : 'Upload Resume'}</span>
                     <input
                       type="file"
                       accept=".pdf,.doc,.docx"
@@ -1043,7 +1160,7 @@ export const CreateProfilePage: React.FC = () => {
                   <h4 className="text-sm font-extrabold text-slate-900">Auto-Generated Student Portfolio</h4>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Oppurtuni automatically formats your profile details, verified coding platforms, projects, and certifications into a sleek digital portfolio card ready to share with recruiters.
+                  Oppurtuni formats your entered profile details, verified coding platforms, projects, and certifications into a sleek digital portfolio card ready to share with recruiters.
                 </p>
                 <button
                   type="button"
@@ -1090,76 +1207,118 @@ export const CreateProfilePage: React.FC = () => {
                 </p>
               </div>
 
-              {/* KPI Scorecard Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className="p-4 rounded-2xl bg-lavender-50 border border-lavender-200">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Match Power</p>
-                  <p className="text-lg font-extrabold text-lavender-700">{profileAnalysis.matchPower}</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Scored for Top 10% roles</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Opportunity Readiness</p>
-                  <p className="text-sm font-extrabold text-emerald-700 truncate">{profileAnalysis.readiness}</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Internship & Hackathon ready</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-softblue-50 border border-softblue-200 col-span-2 sm:col-span-1">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Verified Elements</p>
-                  <p className="text-lg font-extrabold text-softblue-700">
-                    {(userProfile.emailVerified ? 1 : 0) + (userProfile.phoneVerified ? 1 : 0) + (platforms.length > 0 ? 1 : 0) + (projectsList.length > 0 ? 1 : 0)} / 4
+              {profileAnalysis.completeness === 0 ? (
+                /* Empty Profile State */
+                <div className="p-8 text-center border border-dashed border-lavender-200 rounded-3xl bg-lavender-50/50 space-y-3">
+                  <div className="w-12 h-12 rounded-2xl bg-lavender-100 text-lavender-700 flex items-center justify-center mx-auto">
+                    <Sparkles className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-sm font-extrabold text-slate-800">Complete your profile to unlock AI-powered insights.</h4>
+                  <p className="text-xs text-slate-500 max-w-md mx-auto">
+                    Add your basic details, skills, interests, and projects to enable real-time matching against thousands of opportunities.
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Trust indicators active</p>
+                  <button
+                    type="button"
+                    onClick={() => setActiveSection('basic')}
+                    className="px-5 py-2 rounded-xl bg-lavender-700 text-white font-bold text-xs shadow-xs"
+                  >
+                    Start with Basic Details
+                  </button>
                 </div>
-              </div>
-
-              {/* Skill Strengths */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  Top Skill Strengths Identified
-                </h4>
-                <div className="space-y-1.5">
-                  {profileAnalysis.strengths.map((str, i) => (
-                    <div key={i} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <span>{str}</span>
+              ) : (
+                /* Active Profile Analysis */
+                <>
+                  {/* Completeness Notice if Incomplete */}
+                  {profileAnalysis.completeness < 100 && (
+                    <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-start gap-3">
+                      <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                      <div className="text-xs">
+                        <p className="font-bold text-amber-900">
+                          Your profile is {profileAnalysis.completeness}% complete.
+                        </p>
+                        <p className="text-amber-700 mt-0.5">
+                          {profileAnalysis.missingSections.length > 0 
+                            ? `Add your ${profileAnalysis.missingSections.join(', ')} to improve your opportunity matches.`
+                            : 'Add more projects, platforms, or certifications to maximize your AI match power.'}
+                        </p>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  )}
 
-              {/* Recommended Next Skills */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-lavender-600" />
-                  Recommended Next Skills (Boosts match score by +15%)
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {profileAnalysis.recommended.map((rec, i) => (
-                    <span key={i} className="px-3 py-1 rounded-xl bg-lavender-50 border border-lavender-200 text-lavender-800 font-bold text-xs">
-                      + {rec}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                  {/* KPI Scorecard Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div className="p-4 rounded-2xl bg-lavender-50 border border-lavender-200">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Match Power</p>
+                      <p className="text-lg font-extrabold text-lavender-700">{profileAnalysis.matchPower}</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">Computed from entered details</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Opportunity Readiness</p>
+                      <p className="text-sm font-extrabold text-emerald-700 truncate">{profileAnalysis.readiness}</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">Discovery status</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-softblue-50 border border-softblue-200 col-span-2 sm:col-span-1">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Verified Elements</p>
+                      <p className="text-lg font-extrabold text-softblue-700">
+                        {(userProfile.emailVerified ? 1 : 0) + (userProfile.phoneVerified ? 1 : 0) + (platforms.length > 0 ? 1 : 0) + (projectsList.length > 0 ? 1 : 0)} / 4
+                      </p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">Trust indicators active</p>
+                    </div>
+                  </div>
 
-              {/* Final Launch Action */}
-              <div className="p-5 rounded-3xl bg-gradient-to-r from-lavender-700 via-indigo-600 to-softblue-600 text-white space-y-3 shadow-lg shadow-lavender-500/30">
-                <h4 className="font-extrabold text-sm sm:text-base">Ready to Discover Your Best Matches?</h4>
-                <p className="text-xs text-lavender-100 leading-relaxed">
-                  Your profile has been fully synchronized. Our 4 autonomous AI agents are ready to scan active listings customized to your credentials.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleSaveBasic();
-                    navigateTo('ai-search');
-                  }}
-                  className="px-6 py-2.5 rounded-2xl bg-white text-lavender-900 font-extrabold text-xs shadow-md hover:bg-lavender-50 transition-all cursor-pointer flex items-center gap-2"
-                >
-                  <Sparkles className="w-4 h-4 text-lavender-700" />
-                  <span>Launch AI Discovery Scanner</span>
-                </button>
-              </div>
+                  {/* Skill Strengths */}
+                  {profileAnalysis.strengths.length > 0 && (
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        Top Profile Strengths Identified
+                      </h4>
+                      <div className="space-y-1.5">
+                        {profileAnalysis.strengths.map((str, i) => (
+                          <div key={i} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <span>{str}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Recommended Next Skills */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                      <TrendingUp className="w-3.5 h-3.5 text-lavender-600" />
+                      Recommended Next Skills (Boosts match score by +15%)
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {profileAnalysis.recommended.map((rec, i) => (
+                        <span key={i} className="px-3 py-1 rounded-xl bg-lavender-50 border border-lavender-200 text-lavender-800 font-bold text-xs">
+                          + {rec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Final Launch Action */}
+                  <div className="p-5 rounded-3xl bg-gradient-to-r from-lavender-700 via-indigo-600 to-softblue-600 text-white space-y-3 shadow-lg shadow-lavender-500/30">
+                    <h4 className="font-extrabold text-sm sm:text-base">Ready to Discover Your Best Matches?</h4>
+                    <p className="text-xs text-lavender-100 leading-relaxed">
+                      Your profile has been saved. Our AI discovery scanner will match open opportunities against your verified inputs.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleSaveBasic();
+                        navigateTo('ai-search');
+                      }}
+                      className="px-6 py-2.5 rounded-2xl bg-white text-lavender-900 font-extrabold text-xs shadow-md hover:bg-lavender-50 transition-all cursor-pointer flex items-center gap-2"
+                    >
+                      <Sparkles className="w-4 h-4 text-lavender-700" />
+                      <span>Launch AI Discovery Scanner</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -1175,8 +1334,10 @@ export const CreateProfilePage: React.FC = () => {
             <div className="bg-gradient-to-r from-lavender-700 via-indigo-600 to-softblue-600 p-6 text-white flex items-center justify-between">
               <div>
                 <span className="text-[11px] font-bold text-lavender-200 uppercase tracking-wider">Auto-Compiled Digital Portfolio</span>
-                <h3 className="text-lg font-bold">{fullName}</h3>
-                <p className="text-xs text-lavender-100">{college} • {year} • CGPA: {cgpa}</p>
+                <h3 className="text-lg font-bold">{fullName || 'Your Name'}</h3>
+                <p className="text-xs text-lavender-100">
+                  {college || 'Your College'} • {year} • {cgpa ? `CGPA: ${cgpa}` : 'CGPA: Not set'}
+                </p>
               </div>
               <button
                 onClick={() => setIsPortfolioModalOpen(false)}
@@ -1191,36 +1352,50 @@ export const CreateProfilePage: React.FC = () => {
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Technical Skills</h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {skills.map((s, i) => (
-                    <span key={i} className="px-2.5 py-0.5 rounded-lg bg-lavender-50 text-lavender-800 font-bold text-xs border border-lavender-200">
-                      {s}
-                    </span>
-                  ))}
+                  {skills.length > 0 ? (
+                    skills.map((s, i) => (
+                      <span key={i} className="px-2.5 py-0.5 rounded-lg bg-lavender-50 text-lavender-800 font-bold text-xs border border-lavender-200">
+                        {s}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">No skills added</span>
+                  )}
                 </div>
               </div>
 
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Projects ({projectsList.length})</h4>
                 <div className="space-y-2">
-                  {projectsList.map(p => (
-                    <div key={p.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                      <p className="text-xs font-bold text-slate-900">{p.name}</p>
-                      <p className="text-[11px] text-slate-600 mt-0.5">{p.description}</p>
-                      <p className="text-[10px] text-lavender-700 font-bold mt-1">Tech: {p.tech.join(', ')}</p>
-                    </div>
-                  ))}
+                  {projectsList.length > 0 ? (
+                    projectsList.map(p => (
+                      <div key={p.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                        <p className="text-xs font-bold text-slate-900">{p.name}</p>
+                        <p className="text-[11px] text-slate-600 mt-0.5">{p.description}</p>
+                        {p.tech.length > 0 && (
+                          <p className="text-[10px] text-lavender-700 font-bold mt-1">Tech: {p.tech.join(', ')}</p>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">No projects added</span>
+                  )}
                 </div>
               </div>
 
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Verified Certifications</h4>
                 <div className="space-y-1.5">
-                  {certificationsList.map(c => (
-                    <div key={c.id} className="text-xs text-slate-700 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <strong>{c.name}</strong> — {c.issuer} ({c.issueDate})
-                    </div>
-                  ))}
+                  {certificationsList.length > 0 ? (
+                    certificationsList.map(c => (
+                      <div key={c.id} className="text-xs text-slate-700 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <strong>{c.name}</strong> — {c.issuer} ({c.issueDate})
+                      </div>
+                    ))
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">No certifications added</span>
+                  )}
                 </div>
               </div>
             </div>

@@ -1,87 +1,27 @@
 import { Opportunity, UserProfile, SkillGapAnalysis, NotificationItem, AgentStatus } from '../types';
 
 export const initialUserProfile: UserProfile = {
-  name: 'Yasmin Beera',
-  email: 'yasmin@gmail.com',
+  name: '',
+  email: '',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  college: 'Dr. B.R. Ambedkar, Konaseema',
+  college: '',
   year: '1st Year',
-  cgpa: '9.2',
-  skills: ['C++', 'Python', 'Web Development', 'Communication', 'React', 'HTML', 'CSS', 'JavaScript'],
-  interests: ['Technology', 'AI/ML', 'Design', 'Business'],
-  preferredLocation: 'Hyderabad',
+  cgpa: '',
+  skills: [],
+  interests: [],
+  preferredLocation: '',
   opportunityTypes: ['Internships', 'Jobs', 'Hackathons', 'Meetups'],
-  profileCompleted: 78,
-  resumeName: 'Yasmin_Beera_Resume_2025.pdf',
-  phone: '+91 98765 43210',
-  bio: 'Passionate computer science student enthusiastic about full-stack engineering, generative AI, and human-centered product design.',
-  githubUrl: 'https://github.com/yasmin-beera',
-  linkedinUrl: 'https://linkedin.com/in/yasmin-beera',
-  emailVerified: true,
-  phoneVerified: true,
-  publicPlatforms: [
-    { platform: 'GitHub', url: 'https://github.com/yasmin-beera' },
-    { platform: 'LinkedIn', url: 'https://linkedin.com/in/yasmin-beera' },
-    { platform: 'LeetCode', url: 'https://leetcode.com/u/yasmin_beera' },
-    { platform: 'HackerRank', url: 'https://hackerrank.com/profile/yasmin_beera' },
-    { platform: 'Portfolio', url: 'https://yasminbeera.dev' }
-  ],
-  projects: [
-    {
-      id: 'proj-1',
-      name: 'Oppurtuni AI Discovery Platform',
-      description: 'Multi-agent career discovery platform matching students with internships and hackathons using contextual AI embeddings.',
-      tech: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
-      github: 'https://github.com/yasmin-beera/oppurtuni',
-      link: 'https://oppurtuni.app',
-      startDate: 'Jan 2025',
-      endDate: 'Present'
-    },
-    {
-      id: 'proj-2',
-      name: 'Algorithm Visualizer 3D',
-      description: 'Interactive graphical simulator demonstrating pathfinding, sorting, and binary trees with interactive step playback.',
-      tech: ['JavaScript', 'Canvas API', 'HTML5', 'CSS3'],
-      github: 'https://github.com/yasmin-beera/algo-viz-3d',
-      startDate: 'Sep 2024',
-      endDate: 'Dec 2024'
-    },
-    {
-      id: 'proj-3',
-      name: 'Campus Event Hub',
-      description: 'Centralized portal for university club events, workshop RSVP, and automated digital certificate generation.',
-      tech: ['React', 'Node.js', 'PostgreSQL', 'Tailwind'],
-      github: 'https://github.com/yasmin-beera/campus-event-hub',
-      startDate: 'Mar 2024',
-      endDate: 'Jul 2024'
-    }
-  ],
-  certifications: [
-    {
-      id: 'cert-1',
-      name: 'Meta Front-End Developer Certificate',
-      issuer: 'Meta / Coursera',
-      issueDate: 'Nov 2024',
-      credentialId: 'META-FE-994821',
-      credentialUrl: 'https://coursera.org/verify/META-FE-994821'
-    },
-    {
-      id: 'cert-2',
-      name: 'AWS Certified Cloud Practitioner',
-      issuer: 'Amazon Web Services',
-      issueDate: 'Aug 2024',
-      credentialId: 'AWS-CCP-847291',
-      credentialUrl: 'https://aws.amazon.com/verification'
-    },
-    {
-      id: 'cert-3',
-      name: 'Generative AI & LLM Systems Masterclass',
-      issuer: 'DeepLearning.AI',
-      issueDate: 'Jan 2025',
-      credentialId: 'DLAI-GENAI-10293',
-      credentialUrl: 'https://deeplearning.ai/verify'
-    }
-  ]
+  profileCompleted: 0,
+  resumeName: undefined,
+  phone: '',
+  bio: '',
+  githubUrl: '',
+  linkedinUrl: '',
+  emailVerified: false,
+  phoneVerified: false,
+  publicPlatforms: [],
+  projects: [],
+  certifications: []
 };
 
 export const initialOpportunities: Opportunity[] = [

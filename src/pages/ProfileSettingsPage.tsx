@@ -130,9 +130,9 @@ export const ProfileSettingsPage: React.FC = () => {
                 </span>
               </div>
               <div className="space-y-0.5">
-                <h2 className="text-lg font-extrabold text-slate-900">{userProfile.name}</h2>
-                <p className="text-xs text-slate-500 font-medium">{userProfile.email}</p>
-                <p className="text-xs text-lavender-700 font-bold">{userProfile.year} • {userProfile.college}</p>
+                <h2 className="text-lg font-extrabold text-slate-900">{userProfile.name || 'Student Profile'}</h2>
+                <p className="text-xs text-slate-500 font-medium">{userProfile.email || 'No email registered'}</p>
+                <p className="text-xs text-lavender-700 font-bold">{userProfile.college ? `${userProfile.year} • ${userProfile.college}` : 'Profile Incomplete'}</p>
               </div>
             </div>
 
@@ -149,7 +149,11 @@ export const ProfileSettingsPage: React.FC = () => {
                 />
               </div>
               <p className="text-[11px] text-slate-500">
-                Your profile is optimized for <strong className="text-slate-800">Software, Frontend & AI roles</strong>.
+                {userProfile.profileCompleted > 50 ? (
+                  <>Your profile is optimized for <strong className="text-slate-800">Software, Frontend & AI roles</strong>.</>
+                ) : (
+                  <>Complete your profile in the builder to unlock AI opportunity recommendations.</>
+                )}
               </p>
             </div>
 
@@ -157,11 +161,15 @@ export const ProfileSettingsPage: React.FC = () => {
             <div className="space-y-2">
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Your Active Skills</span>
               <div className="flex flex-wrap gap-1.5">
-                {userProfile.skills.map((s, idx) => (
-                  <span key={idx} className="text-xs font-semibold px-3 py-1 bg-lavender-50 text-lavender-800 rounded-xl border border-lavender-200">
-                    {s}
-                  </span>
-                ))}
+                {userProfile.skills.length > 0 ? (
+                  userProfile.skills.map((s, idx) => (
+                    <span key={idx} className="text-xs font-semibold px-3 py-1 bg-lavender-50 text-lavender-800 rounded-xl border border-lavender-200">
+                      {s}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-xs text-slate-400 italic">No skills added yet</span>
+                )}
               </div>
             </div>
 

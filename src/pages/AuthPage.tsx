@@ -15,9 +15,9 @@ import { OpportuniLogo } from '../components/common/OpportuniLogo';
 export const AuthPage: React.FC = () => {
   const { login, navigateTo } = useApp();
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
-  const [fullName, setFullName] = useState('Yasmin Beera');
-  const [email, setEmail] = useState('yasmin@gmail.com');
-  const [password, setPassword] = useState('SuperSecret2025!');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -101,7 +101,7 @@ export const AuthPage: React.FC = () => {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Yasmin Beera"
+                  placeholder="e.g. Ananya Sharma"
                   className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-lavender-500/20 focus:border-lavender-500 transition-all"
                   required
                 />
@@ -117,7 +117,7 @@ export const AuthPage: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="yasmin@gmail.com"
+                placeholder="e.g. ananya.sharma@gmail.com"
                 className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-lavender-500/20 focus:border-lavender-500 transition-all"
                 required
               />
