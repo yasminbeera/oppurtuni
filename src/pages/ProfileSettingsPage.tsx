@@ -24,6 +24,7 @@ export const ProfileSettingsPage: React.FC = () => {
   const { 
     userProfile, 
     setIsEditProfileModalOpen, 
+    navigateTo,
     logout, 
     showToast,
     goBack 
@@ -32,59 +33,52 @@ export const ProfileSettingsPage: React.FC = () => {
   const settingsSections = [
     {
       id: 'personal',
-      title: 'Personal Information',
-      description: `${userProfile.name} • ${userProfile.email}`,
+      title: 'Personal Information & Verification',
+      description: `${userProfile.name} • ${userProfile.email} (${userProfile.emailVerified ? 'Verified' : 'Unverified'})`,
       icon: <User className="w-5 h-5 text-lavender-600" />,
-      action: () => setIsEditProfileModalOpen(true)
+      action: () => navigateTo('create-profile')
     },
     {
       id: 'skills',
-      title: 'Skills & Interests',
+      title: 'Skills & Domain Interests',
       description: `${userProfile.skills.length} skills • ${userProfile.interests.length} domains`,
-      icon: <Sparkles className="w-5 h-5 text-periwinkle-600" />,
-      action: () => setIsEditProfileModalOpen(true)
+      icon: <Sparkles className="w-5 h-5 text-lavender-600" />,
+      action: () => navigateTo('create-profile')
     },
     {
       id: 'education',
-      title: 'Education',
-      description: `${userProfile.college} (${userProfile.year})`,
+      title: 'Education & Academic Details',
+      description: `${userProfile.college} (${userProfile.year} • CGPA: ${userProfile.cgpa || '9.2'})`,
       icon: <GraduationCap className="w-5 h-5 text-mint-600" />,
-      action: () => setIsEditProfileModalOpen(true)
+      action: () => navigateTo('create-profile')
     },
     {
-      id: 'location',
-      title: 'Location Preferences',
-      description: `Preferred: ${userProfile.preferredLocation}`,
-      icon: <MapPin className="w-5 h-5 text-softpink-600" />,
-      action: () => setIsEditProfileModalOpen(true)
-    },
-    {
-      id: 'preferences',
-      title: 'Opportunity Preferences',
-      description: `${userProfile.opportunityTypes.join(', ')}`,
+      id: 'projects',
+      title: 'Projects & Certifications',
+      description: `${userProfile.projects?.length || 3} projects • ${userProfile.certifications?.length || 3} credentials`,
       icon: <Briefcase className="w-5 h-5 text-softblue-600" />,
-      action: () => setIsEditProfileModalOpen(true)
+      action: () => navigateTo('create-profile')
     },
     {
       id: 'notifications',
       title: 'Notifications & Alerts',
       description: 'Daily digests, deadline reminders, match alerts',
       icon: <Bell className="w-5 h-5 text-amber-600" />,
-      action: () => showToast('Notification preferences are active and optimized.', 'info')
+      action: () => navigateTo('notifications')
     },
     {
       id: 'security',
       title: 'Account & Security',
-      description: 'Password, two-factor auth & connected accounts',
+      description: 'Password, two-factor auth & connected devices',
       icon: <Lock className="w-5 h-5 text-cyan-600" />,
-      action: () => showToast('Security check: 2FA is verified and active.', 'success')
+      action: () => navigateTo('account-security')
     },
     {
       id: 'help',
       title: 'Help & Support',
       description: 'Frequently asked questions, live chat & guides',
       icon: <HelpCircle className="w-5 h-5 text-slate-600" />,
-      action: () => showToast('oppurtuni Helpdesk: support@oppurtuni.app', 'info')
+      action: () => navigateTo('help-support')
     },
   ];
 

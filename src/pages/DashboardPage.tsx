@@ -194,46 +194,47 @@ export const DashboardPage: React.FC = () => {
         {/* Find My Opportunities Hero Action Card (8 Cols) */}
         <div 
           onClick={() => navigateTo('ai-search')}
-          className="lg:col-span-8 relative overflow-hidden rounded-3xl bg-gradient-to-r from-lavender-700 via-purple-700 to-indigo-700 p-6 sm:p-7 text-white shadow-xl shadow-lavender-600/25 hover:shadow-lavender-600/35 transition-all cursor-pointer group flex flex-col justify-between"
+          className="lg:col-span-8 relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-lavender-50/90 to-lavender-100/70 p-6 sm:p-7 text-slate-900 border border-lavender-200/90 shadow-md shadow-lavender-200/40 hover:border-lavender-300 transition-all cursor-pointer group flex flex-col justify-between"
         >
-          {/* Ambient Glows */}
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
-          <div className="absolute -right-6 -bottom-6 w-48 h-48 bg-mint-400/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-2 right-12 w-24 h-24 bg-pink-400/20 rounded-full blur-2xl pointer-events-none" />
+          {/* Subtle Ambient Pastel Blobs */}
+          <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-lavender-200/30 to-transparent pointer-events-none" />
+          <div className="absolute -right-6 -bottom-6 w-48 h-48 bg-mint-400/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-2 right-12 w-24 h-24 bg-lavender-400/15 rounded-full blur-2xl pointer-events-none" />
 
           <div className="relative z-10 space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-xs shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 text-mint-300" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-800 border border-lavender-200 text-xs font-bold shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-lavender-600" />
               <span>Multi-Platform AI Discovery Engine</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-slate-900">
               Find My Best Opportunities
             </h2>
-            <p className="text-xs sm:text-sm text-lavender-100 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">
               Our 4 intelligent AI agents crawl LinkedIn, Unstop, Naukri, Wellfound, Devfolio & Handshake to match high-intent roles customized to your skills.
             </p>
 
             {/* Platform source chips */}
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
               {['LinkedIn', 'Unstop', 'Internshala', 'Wellfound', 'Devfolio', 'Meetup'].map((src, i) => (
-                <span key={i} className="text-[11px] font-semibold bg-white/15 px-2.5 py-0.5 rounded-lg text-lavender-100 backdrop-blur-xs">
+                <span key={i} className="text-[11px] font-semibold bg-white/90 border border-lavender-200/80 px-2.5 py-0.5 rounded-lg text-slate-700 shadow-2xs">
                   {src}
                 </span>
               ))}
-              <span className="text-[11px] font-bold text-mint-300 ml-1">+60 others</span>
+              <span className="text-[11px] font-bold text-lavender-700 ml-1">+60 others</span>
             </div>
           </div>
 
-          <div className="relative z-10 pt-6 flex items-center justify-between">
+          <div className="relative z-10 pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-mint-400 animate-pulse" />
-              <span className="text-xs font-semibold text-lavender-100">Live feed ready to scan</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-semibold text-slate-600">Live multi-platform scanner ready</span>
             </div>
 
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white text-lavender-900 font-extrabold text-xs shadow-lg group-hover:scale-105 group-hover:bg-lavender-50 transition-all">
+            {/* Prominent Start Discovery CTA */}
+            <div className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-lavender-700 via-indigo-600 to-softblue-600 hover:from-lavender-800 hover:to-indigo-700 text-white font-extrabold text-sm shadow-lg shadow-lavender-500/30 group-hover:scale-105 transition-all">
               <span>Start Discovery</span>
-              <ArrowRight className="w-4 h-4 text-lavender-700 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         </div>

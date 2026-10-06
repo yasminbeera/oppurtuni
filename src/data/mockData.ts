@@ -6,6 +6,7 @@ export const initialUserProfile: UserProfile = {
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   college: 'Dr. B.R. Ambedkar, Konaseema',
   year: '1st Year',
+  cgpa: '9.2',
   skills: ['C++', 'Python', 'Web Development', 'Communication', 'React', 'HTML', 'CSS', 'JavaScript'],
   interests: ['Technology', 'AI/ML', 'Design', 'Business'],
   preferredLocation: 'Hyderabad',
@@ -15,7 +16,72 @@ export const initialUserProfile: UserProfile = {
   phone: '+91 98765 43210',
   bio: 'Passionate computer science student enthusiastic about full-stack engineering, generative AI, and human-centered product design.',
   githubUrl: 'https://github.com/yasmin-beera',
-  linkedinUrl: 'https://linkedin.com/in/yasmin-beera'
+  linkedinUrl: 'https://linkedin.com/in/yasmin-beera',
+  emailVerified: true,
+  phoneVerified: true,
+  publicPlatforms: [
+    { platform: 'GitHub', url: 'https://github.com/yasmin-beera' },
+    { platform: 'LinkedIn', url: 'https://linkedin.com/in/yasmin-beera' },
+    { platform: 'LeetCode', url: 'https://leetcode.com/u/yasmin_beera' },
+    { platform: 'HackerRank', url: 'https://hackerrank.com/profile/yasmin_beera' },
+    { platform: 'Portfolio', url: 'https://yasminbeera.dev' }
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Oppurtuni AI Discovery Platform',
+      description: 'Multi-agent career discovery platform matching students with internships and hackathons using contextual AI embeddings.',
+      tech: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
+      github: 'https://github.com/yasmin-beera/oppurtuni',
+      link: 'https://oppurtuni.app',
+      startDate: 'Jan 2025',
+      endDate: 'Present'
+    },
+    {
+      id: 'proj-2',
+      name: 'Algorithm Visualizer 3D',
+      description: 'Interactive graphical simulator demonstrating pathfinding, sorting, and binary trees with interactive step playback.',
+      tech: ['JavaScript', 'Canvas API', 'HTML5', 'CSS3'],
+      github: 'https://github.com/yasmin-beera/algo-viz-3d',
+      startDate: 'Sep 2024',
+      endDate: 'Dec 2024'
+    },
+    {
+      id: 'proj-3',
+      name: 'Campus Event Hub',
+      description: 'Centralized portal for university club events, workshop RSVP, and automated digital certificate generation.',
+      tech: ['React', 'Node.js', 'PostgreSQL', 'Tailwind'],
+      github: 'https://github.com/yasmin-beera/campus-event-hub',
+      startDate: 'Mar 2024',
+      endDate: 'Jul 2024'
+    }
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Meta Front-End Developer Certificate',
+      issuer: 'Meta / Coursera',
+      issueDate: 'Nov 2024',
+      credentialId: 'META-FE-994821',
+      credentialUrl: 'https://coursera.org/verify/META-FE-994821'
+    },
+    {
+      id: 'cert-2',
+      name: 'AWS Certified Cloud Practitioner',
+      issuer: 'Amazon Web Services',
+      issueDate: 'Aug 2024',
+      credentialId: 'AWS-CCP-847291',
+      credentialUrl: 'https://aws.amazon.com/verification'
+    },
+    {
+      id: 'cert-3',
+      name: 'Generative AI & LLM Systems Masterclass',
+      issuer: 'DeepLearning.AI',
+      issueDate: 'Jan 2025',
+      credentialId: 'DLAI-GENAI-10293',
+      credentialUrl: 'https://deeplearning.ai/verify'
+    }
+  ]
 };
 
 export const initialOpportunities: Opportunity[] = [
@@ -40,6 +106,7 @@ export const initialOpportunities: Opportunity[] = [
       'Great for your career growth in tech'
     ],
     requiredSkills: ['Python', 'C++', 'Problem Solving', 'Communication'],
+    preferredSkills: ['TypeScript', 'Git', 'System Design'],
     eligibility: 'Currently pursuing a degree (UG/PG)',
     about: 'Work on real-world problems, build innovative solutions and learn from the best in the industry. This internship offers hands-on experience in product development, engineering, and more.',
     overview: 'As a Software Engineering Intern at Google, you will work on our core products and services that impact billions of users globally. You will collaborate with senior engineers, participate in code reviews, and ship production-ready code.',
@@ -47,7 +114,11 @@ export const initialOpportunities: Opportunity[] = [
     applied: true,
     applicationStatus: 'Applied',
     appliedDate: 'Applied on 12 Apr 2025',
-    platformSource: 'LinkedIn'
+    platformSource: 'LinkedIn',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'Jun 1, 2025',
+    endDate: 'Aug 24, 2025'
   },
   {
     id: 'opp-2',
@@ -70,13 +141,17 @@ export const initialOpportunities: Opportunity[] = [
       'Fresher friendly role with comprehensive mentorship'
     ],
     requiredSkills: ['React', 'JavaScript', 'CSS', 'TypeScript', 'Responsive Design'],
+    preferredSkills: ['Next.js', 'Redux', 'Tailwind CSS'],
     eligibility: 'B.Tech / BCA / MCA (2024 / 2025 Batch)',
     about: "Join Meesho's high-speed engineering team to build scalable e-commerce interfaces powering millions of daily Indian entrepreneurs.",
     overview: 'You will build fluid, delightful web and mobile web experiences using modern React, TypeScript, and micro-frontend architectures with low latency.',
     saved: true,
     applied: false,
     applicationStatus: 'Saved',
-    platformSource: 'Naukri'
+    platformSource: 'Naukri',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'Jul 15, 2025'
   },
   {
     id: 'opp-3',
@@ -99,13 +174,21 @@ export const initialOpportunities: Opportunity[] = [
       'Top performers get fast-tracked for sponsor internships'
     ],
     requiredSkills: ['AI/ML', 'Fullstack', 'UI/UX Design', 'Teamwork'],
+    preferredSkills: ['Python', 'FastAPI', 'Figma'],
     eligibility: 'Open to all university students across India',
     about: 'Create technological solutions addressing sustainability, healthcare, and education challenges with direct mentorship from industry leaders.',
     overview: '48-hour virtual innovation sprint where teams ideate, prototype, and pitch high-impact solutions to a panel of venture capitalists and chief technology officers.',
     saved: true,
     applied: false,
     applicationStatus: 'Saved',
-    platformSource: 'Unstop'
+    platformSource: 'Unstop',
+    verificationStatus: 'Verified',
+    eventStatus: 'Upcoming',
+    startDate: 'May 20, 2025',
+    endDate: 'May 22, 2025',
+    prizePool: '₹3,00,000',
+    teamSize: '2 - 4 Members',
+    theme: 'AI for Sustainable Impact'
   },
   {
     id: 'opp-4',
@@ -135,7 +218,12 @@ export const initialOpportunities: Opportunity[] = [
     applied: false,
     applicationStatus: 'Saved',
     appliedDate: 'Saved on 8 Apr 2025',
-    platformSource: 'Meetup'
+    platformSource: 'Meetup',
+    verificationStatus: 'Needs Verification',
+    eventStatus: 'Upcoming',
+    startDate: 'May 28, 2025',
+    speakers: ['Rohan Verma (Lead Designer @Swiggy)', 'Ananya Roy (Product Architect @Razorpay)'],
+    topics: ['Design Systems at Scale', 'AI-Assisted Prototyping in Figma']
   },
   {
     id: 'opp-5',
@@ -158,6 +246,7 @@ export const initialOpportunities: Opportunity[] = [
       'Excellent benefits and continuous learning credits'
     ],
     requiredSkills: ['C++', 'TypeScript', 'Data Structures', 'Cloud Systems'],
+    preferredSkills: ['Azure', 'Distributed Computing'],
     eligibility: 'Graduating 2024/2025 with CS or related degree',
     about: 'Join Azure and Microsoft 365 developer platforms to engineer mission-critical cloud infrastructure and client apps.',
     overview: 'Software Engineers at Microsoft invent, design, code, and deploy complex cloud services used by enterprise customers around the globe.',
@@ -165,7 +254,10 @@ export const initialOpportunities: Opportunity[] = [
     applied: true,
     applicationStatus: 'Interview',
     interviewDate: 'Interview on 18 Apr 2025',
-    platformSource: 'LinkedIn'
+    platformSource: 'LinkedIn',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'Jul 1, 2025'
   },
   {
     id: 'opp-6',
@@ -195,7 +287,10 @@ export const initialOpportunities: Opportunity[] = [
     applied: true,
     applicationStatus: 'Applied',
     appliedDate: 'Applied on 10 Apr 2025',
-    platformSource: 'Handshake'
+    platformSource: 'Handshake',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'Jun 10, 2025'
   },
   {
     id: 'opp-7',
@@ -218,13 +313,17 @@ export const initialOpportunities: Opportunity[] = [
       'Exceptional mentorship by Principal Engineers'
     ],
     requiredSkills: ['Python', 'Java', 'Algorithms', 'System Design'],
+    preferredSkills: ['AWS', 'Data Structures', 'Git'],
     eligibility: 'Pre-final & Final year students in Computer Science / IT',
     about: 'Build high-volume distributed systems that power Amazon Web Services and retail e-commerce engines.',
     overview: 'Interns write production software alongside full-time team members, participating in sprint cycles, design reviews, and automated CI/CD deployments.',
     saved: false,
     applied: false,
     applicationStatus: undefined,
-    platformSource: 'Wellfound'
+    platformSource: 'Wellfound',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'Jun 15, 2025'
   },
   {
     id: 'opp-8',
@@ -253,7 +352,14 @@ export const initialOpportunities: Opportunity[] = [
     saved: false,
     applied: false,
     applicationStatus: undefined,
-    platformSource: 'Unstop'
+    platformSource: 'Unstop',
+    verificationStatus: 'Verified',
+    eventStatus: 'Upcoming',
+    startDate: 'May 30, 2025',
+    endDate: 'Jun 2, 2025',
+    prizePool: '₹5,00,000',
+    teamSize: '1 - 4 Members',
+    theme: 'Next-Gen Urban Logistics & Routing'
   },
   {
     id: 'opp-9',
@@ -282,7 +388,11 @@ export const initialOpportunities: Opportunity[] = [
     saved: true,
     applied: false,
     applicationStatus: 'Saved',
-    platformSource: 'Devfolio'
+    platformSource: 'Devfolio',
+    verificationStatus: 'Verified',
+    eventStatus: 'Upcoming',
+    startDate: 'Jul 1, 2025',
+    endDate: 'Jun 30, 2026'
   },
   {
     id: 'opp-10',
@@ -312,7 +422,11 @@ export const initialOpportunities: Opportunity[] = [
     applied: true,
     applicationStatus: 'Applied',
     appliedDate: 'Applied on 14 Apr 2025',
-    platformSource: 'Unstop'
+    platformSource: 'Unstop',
+    verificationStatus: 'Verified',
+    eventStatus: 'Upcoming',
+    startDate: 'Jun 7, 2025',
+    endDate: 'Jun 9, 2025'
   },
   {
     id: 'opp-11',
@@ -342,7 +456,10 @@ export const initialOpportunities: Opportunity[] = [
     applied: true,
     applicationStatus: 'Assessment',
     appliedDate: 'Applied on 05 Apr 2025',
-    platformSource: 'Google Careers'
+    platformSource: 'Google Careers',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'Jun 20, 2025'
   },
   {
     id: 'opp-12',
@@ -371,7 +488,78 @@ export const initialOpportunities: Opportunity[] = [
     saved: true,
     applied: false,
     applicationStatus: 'Saved',
-    platformSource: 'Meetup'
+    platformSource: 'Meetup',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ongoing',
+    startDate: 'May 20, 2025',
+    endDate: 'May 21, 2025',
+    speakers: ['Dr. Andrew Ng', 'Alex Albert (Anthropic Developer Relations)'],
+    topics: ['Model Context Protocol (MCP)', 'Autonomous Agent Loops & Tool Execution']
+  },
+  {
+    id: 'opp-13',
+    title: 'Smart India Hackathon (SIH 2024)',
+    company: 'Ministry of Education & AICTE',
+    companyLogo: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&auto=format&fit=crop&q=80',
+    logoBg: 'bg-orange-50',
+    location: 'Pan India Nodal Centers',
+    workMode: 'On-site',
+    type: 'Hackathon',
+    matchPercentage: 85,
+    deadlineDays: 0,
+    deadlineDate: 'Ended on Mar 15, 2025',
+    duration: '36 Hours Grand Finale',
+    stipend: '₹1,00,000 per problem statement',
+    tags: ['Hackathon', 'National'],
+    whyFits: [
+      'Government flagship nationwide digital challenge',
+      'Direct prototype adoption by central ministries'
+    ],
+    requiredSkills: ['Fullstack', 'IoT', 'AI/ML', 'Problem Solving'],
+    eligibility: 'College student teams across India',
+    about: "World's biggest open innovation model inculcating product innovation and problem-solving mentality among students.",
+    overview: 'Nationwide initiative to provide students a platform to solve pressing problems of ministries, departments, and industries.',
+    saved: false,
+    applied: true,
+    applicationStatus: 'Selected',
+    appliedDate: 'Completed on 15 Mar 2025',
+    platformSource: 'AICTE',
+    verificationStatus: 'Verified',
+    eventStatus: 'Ended',
+    startDate: 'Mar 13, 2025',
+    endDate: 'Mar 15, 2025'
+  },
+  {
+    id: 'opp-14',
+    title: 'Kaggle March ML Olympiad',
+    company: 'Google Kaggle',
+    companyLogo: 'https://assets.stickpng.com/images/584830f5cef1014c0b5e4aa1.png',
+    logoBg: 'bg-sky-50',
+    location: 'Global Virtual',
+    workMode: 'Online',
+    type: 'Competition',
+    matchPercentage: 79,
+    deadlineDays: 0,
+    deadlineDate: 'Ended on Mar 31, 2025',
+    duration: '3 Weeks',
+    stipend: '$5,000 Medals & Swag',
+    tags: ['Competition', 'Data Science'],
+    whyFits: [
+      'Tabular and vision prediction challenge with real community notebooks',
+      'Grandmaster tier leaderboard rating'
+    ],
+    requiredSkills: ['Python', 'Pandas', 'Scikit-learn', 'PyTorch'],
+    eligibility: 'Open to all ML practitioners and students',
+    about: 'Community Kaggle ML competition predicting multimodal consumer behavioral patterns.',
+    overview: 'Feature engineering sprint and ensembling pipelines submitted against unseen test data.',
+    saved: false,
+    applied: false,
+    applicationStatus: undefined,
+    platformSource: 'Kaggle',
+    verificationStatus: 'Needs Verification',
+    eventStatus: 'Ended',
+    startDate: 'Mar 10, 2025',
+    endDate: 'Mar 31, 2025'
   }
 ];
 

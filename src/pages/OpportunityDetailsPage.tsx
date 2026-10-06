@@ -106,10 +106,26 @@ export const OpportunityDetailsPage: React.FC = () => {
               />
             </div>
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lavender-100 text-lavender-800 text-xs font-bold">
-                <span>{selectedOpportunity.type}</span>
-                <span>•</span>
-                <span>Verified Listing</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-100 text-lavender-800 text-xs font-bold">
+                  {selectedOpportunity.type}
+                </span>
+                {selectedOpportunity.verificationStatus !== 'Needs Verification' ? (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-xs font-bold">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    ✓ Verified Employer
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/80 text-xs font-bold">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    ⚠ Needs Verification
+                  </span>
+                )}
+                {selectedOpportunity.isDirectCompanyPost && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-lavender-50 text-lavender-800 border border-lavender-200 text-xs font-bold">
+                    ⚡ Direct Company Post
+                  </span>
+                )}
               </div>
               <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight leading-snug">
                 {selectedOpportunity.title}

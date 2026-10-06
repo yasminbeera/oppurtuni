@@ -7,13 +7,19 @@ export type PageType =
   | 'ai-search'
   | 'opportunities'
   | 'opportunity-details'
+  | 'recents'
   | 'skill-gap'
   | 'career-insights'
   | 'post-opportunity'
   | 'application-tracker'
   | 'saved-opportunities'
   | 'profile-settings'
+  | 'notifications'
+  | 'account-security'
+  | 'help-support'
   | 'settings';
+
+export type ThemeType = 'Soft Lavender' | 'Pure White' | 'Midnight Indigo';
 
 export type OpportunityCategory = 
   | 'All' 
@@ -53,6 +59,31 @@ export interface CompanyProfile {
   commonlySoughtSkills: string[];
 }
 
+export interface ProjectItem {
+  id: string;
+  name: string;
+  description: string;
+  tech: string[];
+  link?: string;
+  github?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface CertificationItem {
+  id: string;
+  name: string;
+  issuer: string;
+  issueDate: string;
+  credentialId?: string;
+  credentialUrl?: string;
+}
+
+export interface PublicPlatformItem {
+  platform: string;
+  url: string;
+}
+
 export interface Opportunity {
   id: string;
   title: string;
@@ -84,6 +115,8 @@ export interface Opportunity {
   interviewDate?: string;
   platformSource?: string;
   isDirectCompanyPost?: boolean;
+  verificationStatus?: 'Verified' | 'Needs Verification';
+  eventStatus?: 'Upcoming' | 'Ongoing' | 'Ended';
   postedDate?: string;
   openings?: number;
   applicationLink?: string;
@@ -106,6 +139,7 @@ export interface UserProfile {
   avatar: string;
   college: string;
   year: string;
+  cgpa?: string;
   skills: string[];
   interests: string[];
   preferredLocation: string;
@@ -116,6 +150,11 @@ export interface UserProfile {
   bio?: string;
   githubUrl?: string;
   linkedinUrl?: string;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
+  publicPlatforms?: PublicPlatformItem[];
+  projects?: ProjectItem[];
+  certifications?: CertificationItem[];
 }
 
 export interface LearningItem {

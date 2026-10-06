@@ -17,7 +17,7 @@ import {
 import { useApp } from '../context/AppContext';
 
 export const SettingsPage: React.FC = () => {
-  const { userProfile, updateUserProfile, logout, showToast, goBack } = useApp();
+  const { userProfile, updateUserProfile, theme, setTheme, logout, showToast, goBack } = useApp();
 
   const [activeTab, setActiveTab] = useState<'account' | 'preferences' | 'notifications' | 'privacy' | 'appearance'>('preferences');
 
@@ -32,7 +32,6 @@ export const SettingsPage: React.FC = () => {
   const [emailAlerts, setEmailAlerts] = useState(true);
   const [deadlineReminders, setDeadlineReminders] = useState(true);
   const [aiRecommendations, setAiRecommendations] = useState(true);
-  const [themeMode, setThemeMode] = useState<'Soft Lavender' | 'Pure White' | 'Midnight Indigo'>('Soft Lavender');
 
   const handleSave = () => {
     updateUserProfile({
@@ -270,19 +269,22 @@ export const SettingsPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
-                  { name: 'Soft Lavender', color: 'from-lavender-100 to-softblue-100', active: themeMode === 'Soft Lavender' },
-                  { name: 'Pure White', color: 'from-white to-slate-100', active: themeMode === 'Pure White' },
-                  { name: 'Midnight Indigo', color: 'from-slate-900 to-indigo-950', active: themeMode === 'Midnight Indigo' },
+                  { name: 'Soft Lavender', color: 'from-lavender-100 to-softblue-100', active: theme === 'Soft Lavender' },
+                  { name: 'Pure White', color: 'from-white to-slate-100', active: theme === 'Pure White' },
+                  { name: 'Midnight Indigo', color: 'from-slate-900 to-indigo-950', active: theme === 'Midnight Indigo' },
                 ].map((th) => (
                   <div
                     key={th.name}
-                    onClick={() => setThemeMode(th.name as any)}
+                    onClick={() => setTheme(th.name as any)}
                     className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                      th.active ? 'border-lavender-600 ring-2 ring-lavender-400/30' : 'border-slate-200 hover:border-slate-300'
+                      th.active ? 'border-lavender-600 ring-2 ring-lavender-400/40 bg-lavender-50/50' : 'border-slate-200 hover:border-slate-300'
                     }`}
                   >
                     <div className={`w-full h-12 rounded-xl bg-gradient-to-r ${th.color} mb-2 shadow-2xs`} />
-                    <span className="text-xs font-bold text-slate-800 block text-center">{th.name}</span>
+                    <span className="text-xs font-bold text-slate-800 block text-center flex items-center justify-center gap-1">
+                      {th.active && <Check className="w-3.5 h-3.5 text-lavender-600" />}
+                      <span>{th.name}</span>
+                    </span>
                   </div>
                 ))}
               </div>

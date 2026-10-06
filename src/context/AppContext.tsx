@@ -1,13 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   PageType, 
+  ThemeType,
   Opportunity, 
   UserProfile, 
   OpportunityCategory, 
   NotificationItem, 
   SkillGapAnalysis,
   LearningItem,
-  CompanyProfile
+  CompanyProfile,
+  ProjectItem,
+  CertificationItem,
+  PublicPlatformItem
 } from '../types';
 import { 
   initialOpportunities, 
@@ -51,12 +55,23 @@ interface AppContextType {
   sortBy: 'match' | 'deadline' | 'stipend';
   setSortBy: (sort: 'match' | 'deadline' | 'stipend') => void;
   
+  // Theme Management
+  theme: ThemeType;
+  setTheme: (theme: ThemeType) => void;
+
   // User Profile
   userProfile: UserProfile;
   updateUserProfile: (updated: Partial<UserProfile>) => void;
   isLoggedIn: boolean;
   login: (email?: string, name?: string) => void;
   logout: () => void;
+  verifyEmail: (code?: string) => boolean;
+  verifyPhone: (code?: string) => boolean;
+  addProject: (project: Omit<ProjectItem, 'id'>) => void;
+  deleteProject: (id: string) => void;
+  addCertification: (cert: Omit<CertificationItem, 'id'>) => void;
+  deleteCertification: (id: string) => void;
+  updatePublicPlatforms: (platforms: PublicPlatformItem[]) => void;
   
   // Skill Gap AI
   selectedSkillGapOppId: string;
@@ -282,11 +297,94 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSelectedCompany(companyProfile);
   };
 
+  const [theme, setThemeState] = useState<ThemeType>(() => {
+    const saved = localStorage.getItem('oppurtuni_theme');
+    return (saved as ThemeType) || 'Soft Lavender';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('oppurtuni_theme', theme);
+    document.documentElement.setAttribute('data-theme', theme.toLowerCase().replace(/\s+/g, '-'));
+    if (theme === 'Midnight Indigo') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const setTheme = (newTheme: ThemeType) => {
+    setThemeState(newTheme);
+    showToast(`Theme changed to "${newTheme}"`, 'info');
+  };
+
+  const verifyEmail = (_code?: string) => {
+    setUserProfile(prev => ({ ...prev, emailVerified: true, profileCompleted: Math.min(100, prev.profileCompleted + 5) }));
+    showToast('✓ Email address successfully verified!', 'success');
+    return true;
+  };
+
+  const verifyPhone = (_code?: string) => {
+    setUserProfile(prev => ({ ...prev, phoneVerified: true, profileCompleted: Math.min(100, prev.profileCompleted + 5) }));
+    showToast('✓ Mobile number successfully verified!', 'success');
+    return true;
+  };
+
+  const addProject = (proj: Omit<ProjectItem, 'id'>) => {
+    const newProj: ProjectItem = {
+      ...proj,
+      id: `proj-${Date.now()}`
+    };
+    setUserProfile(prev => ({
+      ...prev,
+      projects: [newProj, ...(prev.projects || [])],
+      profileCompleted: Math.min(100, prev.profileCompleted + 4)
+    }));
+    showToast(`Added project "${proj.name}"`, 'success');
+  };
+
+  const deleteProject = (id: string) => {
+    setUserProfile(prev => ({
+      ...prev,
+      projects: (prev.projects || []).filter(p => p.id !== id)
+    }));
+    showToast('Project removed', 'info');
+  };
+
+  const addCertification = (cert: Omit<CertificationItem, 'id'>) => {
+    const newCert: CertificationItem = {
+      ...cert,
+      id: `cert-${Date.now()}`
+    };
+    setUserProfile(prev => ({
+      ...prev,
+      certifications: [newCert, ...(prev.certifications || [])],
+      profileCompleted: Math.min(100, prev.profileCompleted + 4)
+    }));
+    showToast(`Added certification "${cert.name}"`, 'success');
+  };
+
+  const deleteCertification = (id: string) => {
+    setUserProfile(prev => ({
+      ...prev,
+      certifications: (prev.certifications || []).filter(c => c.id !== id)
+    }));
+    showToast('Certification removed', 'info');
+  };
+
+  const updatePublicPlatforms = (platforms: PublicPlatformItem[]) => {
+    setUserProfile(prev => ({
+      ...prev,
+      publicPlatforms: platforms,
+      profileCompleted: Math.min(100, prev.profileCompleted + 3)
+    }));
+    showToast('Public profile links updated', 'success');
+  };
+
   const updateUserProfile = (updated: Partial<UserProfile>) => {
     setUserProfile(prev => ({
       ...prev,
       ...updated,
-      profileCompleted: Math.min(100, (prev.profileCompleted || 75) + 5)
+      profileCompleted: Math.min(100, (prev.profileCompleted || 75) + 3)
     }));
     showToast('Profile updated successfully!', 'success');
   };
@@ -370,6 +468,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         navigateTo,
         goBack,
         pageHistory,
+        theme,
+        setTheme,
         opportunities,
         selectedOpportunity,
         setSelectedOpportunityId,
@@ -388,6 +488,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setSortBy,
         userProfile,
         updateUserProfile,
+        verifyEmail,
+        verifyPhone,
+        addProject,
+        deleteProject,
+        addCertification,
+        deleteCertification,
+        updatePublicPlatforms,
         isLoggedIn,
         login,
         logout,

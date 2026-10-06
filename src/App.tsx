@@ -14,6 +14,10 @@ import { CareerInsightsPage } from './pages/CareerInsightsPage';
 import { ApplicationTrackerPage } from './pages/ApplicationTrackerPage';
 import { SavedOpportunitiesPage } from './pages/SavedOpportunitiesPage';
 import { ProfileSettingsPage } from './pages/ProfileSettingsPage';
+import { NotificationsPage } from './pages/NotificationsPage';
+import { AccountSecurityPage } from './pages/AccountSecurityPage';
+import { HelpSupportPage } from './pages/HelpSupportPage';
+import { RecentsPage } from './pages/RecentsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { PostOpportunityPage } from './pages/PostOpportunityPage';
 import { AiAssistantModal } from './components/common/AiAssistantModal';
@@ -40,6 +44,8 @@ export const AppContent: React.FC = () => {
         return <OpportunitiesPage />;
       case 'opportunity-details':
         return <OpportunityDetailsPage />;
+      case 'recents':
+        return <RecentsPage />;
       case 'post-opportunity':
         return <PostOpportunityPage />;
       case 'skill-gap':
@@ -52,6 +58,12 @@ export const AppContent: React.FC = () => {
         return <SavedOpportunitiesPage />;
       case 'profile-settings':
         return <ProfileSettingsPage />;
+      case 'notifications':
+        return <NotificationsPage />;
+      case 'account-security':
+        return <AccountSecurityPage />;
+      case 'help-support':
+        return <HelpSupportPage />;
       case 'settings':
         return <SettingsPage />;
       default:

@@ -116,15 +116,15 @@ export const AiAssistantModal: React.FC = () => {
 
   return (
     <>
-      {/* Floating Pill Button with rich lavender + purple glow */}
+      {/* Small Circular Floating AI Assistant Launcher */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-r from-lavender-700 via-purple-600 to-indigo-600 hover:from-lavender-800 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-xl shadow-lavender-600/35 hover:shadow-lavender-600/50 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20"
+          title="Oppurtuni AI Assistant"
+          className="group relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-lavender-700 via-indigo-600 to-softblue-500 hover:from-lavender-800 hover:to-indigo-700 text-white flex items-center justify-center shadow-xl shadow-lavender-500/30 hover:shadow-lavender-500/45 hover:scale-110 active:scale-95 transition-all duration-200 border-2 border-white/40 cursor-pointer"
         >
-          <Sparkles className="w-4 h-4 text-mint-300 animate-spin-slow group-hover:rotate-45 transition-transform" />
-          <span className="tracking-wide">✨ Ask Oppurtuni AI</span>
-          <span className="w-2 h-2 rounded-full bg-mint-400 animate-pulse ring-2 ring-white/40" />
+          <Sparkles className="w-6 h-6 text-mint-200 group-hover:rotate-12 transition-transform duration-300" />
+          <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-mint-400 ring-2 ring-white animate-pulse" />
         </button>
       </div>
 
